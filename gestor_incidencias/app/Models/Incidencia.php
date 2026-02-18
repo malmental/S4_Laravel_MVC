@@ -14,22 +14,22 @@ class Incidencia extends Model
         'descripcion',
         'estado',
         'prioridad',
-        'user_id',
+        'user_id', // muy importante para la relación
     ];
 
-    // Relación con usuario
+    // Relación inversa: cada incidencia pertenece a un usuario
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
-    // Relación muchos a muchos con tags
+    // Relación muchos a muchos con Tags
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    // Relación con comentarios
+    // Relación uno a muchos con Comments
     public function comments()
     {
         return $this->hasMany(Comment::class);
