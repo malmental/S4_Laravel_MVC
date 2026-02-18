@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Editar Incidencia</title>
 </head>
 <body>
@@ -11,41 +10,31 @@
         @csrf
         @method('PUT')
 
-        <p>
-            <label>Título:</label><br>
-            <input type="text" name="titulo" value="{{ old('titulo', $incidencia->titulo) }}">
-            @error('titulo') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <label>Título:</label><br>
+        <input type="text" name="titulo" value="{{ old('titulo', $incidencia->titulo) }}" required>
+        @error('titulo') <span>{{ $message }}</span> @enderror<br><br>
 
-        <p>
-            <label>Descripción:</label><br>
-            <textarea name="descripcion">{{ old('descripcion', $incidencia->descripcion) }}</textarea>
-            @error('descripcion') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <label>Descripción:</label><br>
+        <textarea name="descripcion" required>{{ old('descripcion', $incidencia->descripcion) }}</textarea>
+        @error('descripcion') <span>{{ $message }}</span> @enderror<br><br>
 
-        <p>
-            <label>Estado:</label><br>
-            <select name="estado">
-                <option value="abierta" {{ old('estado', $incidencia->estado)=='abierta' ? 'selected' : '' }}>Abierta</option>
-                <option value="en_proceso" {{ old('estado', $incidencia->estado)=='en_proceso' ? 'selected' : '' }}>En proceso</option>
-                <option value="cerrada" {{ old('estado', $incidencia->estado)=='cerrada' ? 'selected' : '' }}>Cerrada</option>
-            </select>
-            @error('estado') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <label>Estado:</label><br>
+        <select name="estado">
+            <option value="abierta" {{ old('estado', $incidencia->estado)=='abierta' ? 'selected' : '' }}>Abierta</option>
+            <option value="en_proceso" {{ old('estado', $incidencia->estado)=='en_proceso' ? 'selected' : '' }}>En proceso</option>
+            <option value="cerrada" {{ old('estado', $incidencia->estado)=='cerrada' ? 'selected' : '' }}>Cerrada</option>
+        </select><br><br>
 
-        <p>
-            <label>Prioridad:</label><br>
-            <select name="prioridad">
-                <option value="baja" {{ old('prioridad', $incidencia->prioridad)=='baja' ? 'selected' : '' }}>Baja</option>
-                <option value="media" {{ old('prioridad', $incidencia->prioridad)=='media' ? 'selected' : '' }}>Media</option>
-                <option value="alta" {{ old('prioridad', $incidencia->prioridad)=='alta' ? 'selected' : '' }}>Alta</option>
-            </select>
-            @error('prioridad') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <label>Prioridad:</label><br>
+        <select name="prioridad">
+            <option value="baja" {{ old('prioridad', $incidencia->prioridad)=='baja' ? 'selected' : '' }}>Baja</option>
+            <option value="media" {{ old('prioridad', $incidencia->prioridad)=='media' ? 'selected' : '' }}>Media</option>
+            <option value="alta" {{ old('prioridad', $incidencia->prioridad)=='alta' ? 'selected' : '' }}>Alta</option>
+        </select><br><br>
 
         <button type="submit">Actualizar Incidencia</button>
     </form>
 
-    <a href="{{ route('incidencias.index') }}">Volver al listado</a>
+    <a href="{{ route('incidencias.index') }}">Volver</a>
 </body>
 </html>

@@ -92,4 +92,23 @@ class IncidenciaController extends Controller
 
         return redirect()->route('incidencias.index')->with('success', 'Incidencia eliminada correctamente');
     }
+
+    public function metricas()
+    {
+        $user = auth()->user();
+
+        $total = $user->incidencias()->count();
+        $abiertas = $user->incidencias()->where('estado', 'abierta')->count();
+        $enProceso = $user->incidencias()->where('estado', 'en_proceso')->count();
+        $cerradas = $user->incidencias()->where('estado', 'cerrada')->count();
+        $altaPrioridad = $user->incidencias()->where('prioridad', 'alta')->count();
+
+        return view('dashboard', compact(
+            'total',
+            'abiertas',
+            'enProceso',
+            'cerradas',
+            'altaPrioridad'
+        ));
+    }
 }

@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         // Redirigir al dashboard de incidencias
-        return redirect()->route('incidencias.index');
+        return redirect()->route('dashboard');
     }
 
     /**
