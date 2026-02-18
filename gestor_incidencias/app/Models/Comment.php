@@ -12,16 +12,14 @@ class Comment extends Model
     protected $fillable = [
         'contenido',
         'user_id',
-        'incidencia_id',
+        'incidencia_id'
     ];
 
-    // Relación con usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relación con incidencia
     public function incidencia()
     {
         return $this->belongsTo(Incidencia::class);
