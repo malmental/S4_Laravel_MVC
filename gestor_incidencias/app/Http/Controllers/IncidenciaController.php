@@ -47,9 +47,7 @@ class IncidenciaController extends Controller
     // Mostrar incidencia específica
     public function show(Incidencia $incidencia)
     {
-        if ($incidencia->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('update', $incidencia);
 
         return view('incidencias.show', compact('incidencia'));
     }
