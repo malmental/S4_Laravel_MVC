@@ -14,7 +14,6 @@
     </ul>
 
     <p>
-        <a href="{{ route('metricas') }}">Ver Métricas</a> |
         <a href="{{ route('incidencias.index') }}">Mis Incidencias</a>
     </p>
 
