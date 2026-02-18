@@ -1,24 +1,45 @@
-<h1>Gestor de Incidencias</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mis Incidencias</title>
+</head>
+<body>
+    <h1>Mis Incidencias</h1>
 
-<p>Hola, {{ Auth::user()->name }} | 
-<form action="{{ route('logout') }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit">Cerrar sesión</button>
-</form>
-</p>
+    <a href="{{ route('incidencias.create') }}">Nueva Incidencia</a>
 
-<a href="{{ route('incidencias.create') }}">Nueva incidencia</a>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($incidencias as $incidencia)
+            <tr>
+                <td>{{ $incidencia->titulo }}</td>
+                <td>{{ $incidencia->estado }}</td>
+                <td>{{ $incidencia->prioridad }}</td>
+                <td>
+                    <a href="{{ route('incidencias.edit', $incidencia->id) }}">Editar</a>
+                    <form action="{{ route('incidencias.destroy', $incidencia->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4">No hay incidencias.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-<ul>
-@foreach($incidencias as $incidencia)
-    <li>
-        {{ $incidencia->titulo }} - {{ $incidencia->estado }} - {{ $incidencia->prioridad }}
-        <a href="{{ route('incidencias.edit', $incidencia->id) }}">Editar</a>
-        <form action="{{ route('incidencias.destroy', $incidencia->id) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit">Borrar</button>
-        </form>
-    </li>
-@endforeach
-</ul>
+    <a href="{{ route('dashboard') }}">Volver al Dashboard</a>
+</body>
+</html>
