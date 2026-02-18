@@ -32,7 +32,7 @@ class IncidenciaSeeder extends Seeder
 
         // --- USUARIO 2: Malo Mentalo ---
         $user2 = User::firstOrCreate(
-            ['email' => 'malmental@telsur.cl.com'], 
+            ['email' => 'malmental@telsur.cl'], 
             ['name' => 'Malo Mentalo', 'password' => bcrypt('password')]
         );
 
