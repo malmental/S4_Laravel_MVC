@@ -19,11 +19,6 @@ class Incidencia extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function categorias()
-    {
-        return $this->belongsToMany(Categoria::class);
-    }
-
     public function comments()
     {
         return $this->hasMany(Comment::class);
