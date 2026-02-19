@@ -15,9 +15,7 @@ class DashboardController extends Controller
 
         $incidencias = $user->incidencias()->orderBy('created_at', 'desc')->get();
 
-        $comentarios = Comment::where('user_id', $user->id)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+        $comentarios = Comment::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
 
         $estadisticas = [
             'abiertas' => $incidencias->where('estado', 'abierta')->count(),

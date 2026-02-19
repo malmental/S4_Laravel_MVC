@@ -26,9 +26,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Un usuario puede tener muchas incidencias
     public function incidencias()
-{
-    return $this->hasMany(\App\Models\Incidencia::class);
-}
+    {
+        return $this->hasMany(\App\Models\Incidencia::class);
+    }
 }

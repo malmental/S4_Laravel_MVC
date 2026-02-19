@@ -16,7 +16,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login'); // tu vista de login
+        return view('auth.login'); // La vista de login
     }
 
     /**
@@ -41,6 +41,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/'); // aquí puedes dejar el welcome
+        return redirect('/'); // Aqui se puede especificar la ruta a la que lleva despues de haber sido eliminado el usuario
     }
 }
