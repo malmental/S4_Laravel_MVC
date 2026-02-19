@@ -11,7 +11,6 @@ class Tag extends Model
 
     protected $fillable = ['nombre'];
 
-    // Relación muchos a muchos con Incidencias
     public function incidencias()
     {
         return $this->belongsToMany(Incidencia::class);

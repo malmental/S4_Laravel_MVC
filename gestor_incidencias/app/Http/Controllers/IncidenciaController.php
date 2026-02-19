@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class IncidenciaController extends Controller
 {
-    // Mostrar todas las incidencias del usuario logueado
     public function index()
     {
-        $user = Auth::user(); // <--- aseguramos que traemos al usuario
+        $user = Auth::user(); 
         if (!$user) {
             abort(403, "No estás logueado");
         }
@@ -21,13 +20,11 @@ class IncidenciaController extends Controller
         return view('incidencias.index', compact('incidencias'));
     }
 
-    // Formulario para crear nueva incidencia
     public function create()
     {
         return view('incidencias.create');
     }
 
-    // Guardar incidencia
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -44,7 +41,6 @@ class IncidenciaController extends Controller
         return redirect()->route('incidencias.index')->with('success', 'Incidencia creada correctamente');
     }
 
-    // Mostrar incidencia específica
     public function show(Incidencia $incidencia)
     {
         $this->authorize('update', $incidencia);
@@ -52,7 +48,6 @@ class IncidenciaController extends Controller
         return view('incidencias.show', compact('incidencia'));
     }
 
-    // Formulario para editar incidencia
     public function edit(Incidencia $incidencia)
     {
         if ($incidencia->user_id !== Auth::id()) {
@@ -62,7 +57,6 @@ class IncidenciaController extends Controller
         return view('incidencias.edit', compact('incidencia'));
     }
 
-    // Actualizar incidencia
     public function update(Request $request, Incidencia $incidencia)
     {
         if ($incidencia->user_id !== Auth::id()) {
@@ -81,7 +75,6 @@ class IncidenciaController extends Controller
         return redirect()->route('incidencias.index')->with('success', 'Incidencia actualizada correctamente');
     }
 
-    // Eliminar incidencia
     public function destroy(Incidencia $incidencia)
     {
         if ($incidencia->user_id !== Auth::id()) {
