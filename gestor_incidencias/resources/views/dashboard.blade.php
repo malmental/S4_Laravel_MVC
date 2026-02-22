@@ -63,7 +63,7 @@ use Illuminate\Support\Str;
                 <form method="POST" action="{{ route('comments.store') }}" class="mt-4">
                     @csrf
                     <input type="hidden" id="modalIncidenciaId" name="incidencia_id">
-                    <textarea name="contenido" placeholder="Añadir comentario..." class="w-full border-2 border-black p-2 text-sm bg-cream" required></textarea>
+                    <textarea name="contenido" placeholder="Añadir comentario..." class="w-full p-2 text-sm bg-cream border-none" required></textarea>
                     <button type="submit" class="mt-2 px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase">Comentar</button>
                 </form>
             </div>
@@ -135,12 +135,21 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
                 </div>
             </div>
             
-            <div class="px-6 py-3 bg-cream-dark text-xs flex items-center gap-2">
-                <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
-                <span>SYSTEM ONLINE</span>
-                <span class="ml-4">USER: {{ strtoupper(auth()->user()->name) }}</span>
-                <span class="ml-4">LAST SYNC: 2 MIN AGO</span>
-            </div>
+            <div class="px-6 py-4 bg-cream-dark text-sm flex items-center justify-between">
+    <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
+        <span class="font-semibold">SYSTEM ONLINE</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <span>USER: {{ strtoupper(auth()->user()->name) }}</span>
+        <span>LAST SYNC: 2 MIN AGO</span>
+        <a href="{{ route('incidencias.index') }}" class="ml-4 px-4 py-2 border border-black bg-black text-white text-sm uppercase hover:bg-gray-800">My Incidents</a>
+        <form method="POST" action="{{ route('logout') }}" class="inline">
+            @csrf
+            <button type="submit" class="px-4 py-2 border border-black bg-white text-sm uppercase hover:bg-gray-200">Logout</button>
+        </form>
+    </div>
+</div>
         </div>
         
         <!-- Stats Grid -->
@@ -217,19 +226,19 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
             @endforelse
         </div>
         
-        <!-- Bottom Actions -->
-        <div class="mt-6 flex items-center justify-center gap-4">
-            <a href="{{ route('incidencias.index') }}" class="px-6 py-3 border-2 border-black bg-black text-white text-xs uppercase tracking-wide font-semibold hover:bg-gray-800 transition-colors">
+        <!-- Bottom Actions
+        <div class="mt-6 flex items-center justify-end gap-4">
+            <a href="{{ route('incidencias.index') }}" class="px-8 py-4 border-2 border-black bg-black text-white text-sm uppercase tracking-wide font-semibold hover:bg-gray-800 transition-colors">
                 My Incidents
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="px-6 py-3 border-2 border-black bg-white text-xs uppercase tracking-wide font-semibold hover:bg-cream-dark transition-colors">
+                <button type="submit" class="px-8 py-4 border-2 border-black bg-white text-sm uppercase tracking-wide font-semibold hover:bg-cream-dark transition-colors">
                     Logout
                 </button>
             </form>
         </div>
-    </div>
+    </div> --->
     
     <script>
         // Update time in header
