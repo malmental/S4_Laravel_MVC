@@ -32,7 +32,9 @@
     <div class="w-full max-w-md">
         <!-- Header -->
         <div class="border-3 border-black bg-cream p-6 mb-6 text-center">
-            <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
+            <h1 class="text-2xl font-semibold tracking-tight flex items-center justify-center gap-2">
+    INCIDENT MANAGER
+</h1>
             <p class="text-sm text-gray-custom mt-1">Sistema de Gestión de Incidencias</p>
         </div>
 
