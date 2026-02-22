@@ -84,63 +84,66 @@ class IncidenciaController extends Controller
     }
     
     public function metricas(Request $request)
-{
-    $user = auth()->user();
-    $query = Incidencia::query()->with('user', 'comments.replies', 'comments.user');
+    {
+        $user = auth()->user();
+        $query = Incidencia::query()->with('user', 'comments.replies', 'comments.user');
     
-    // Filtros acumulativos
-    $prioridades = $request->input('prioridad', []);
-    $estados = $request->input('estado', []);
+        // Filtros acumulativos
+        $prioridades = $request->input('prioridad', []);
+        $estados = $request->input('estado', []);
     
-    if (!empty($prioridades)) {
-        $query->whereIn('prioridad', $prioridades);
+        if (!empty($prioridades)) {
+            $query->whereIn('prioridad', $prioridades);
+        }
+    
+        if (!empty($estados)) {
+            $query->whereIn('estado', $estados);
+        }
+    
+        $incidencias = $query->orderBy('created_at', 'desc')->get();
+    
+        // Stats sobre el TOTAL de TODAS las incidencias
+        $altaPrioridad = Incidencia::where('prioridad', 'alta')->count();
+        $abiertas = Incidencia::where('estado', 'abierta')->count();
+        $enProceso = Incidencia::where('estado', 'en_proceso')->count();
+        $cerradas = Incidencia::where('estado', 'cerrada')->count();
+    
+        // Calcular URLs de filtros
+        $filterUrls = [
+            'critical' => $this->buildFilterUrl('prioridad', 'alta', $prioridades),
+            'open' => $this->buildFilterUrl('estado', 'abierta', $estados),
+            'inProgress' => $this->buildFilterUrl('estado', 'en_proceso', $estados),
+            'closed' => $this->buildFilterUrl('estado', 'cerrada', $estados),
+        ];
+    
+        return view('dashboard', compact(
+            'incidencias',
+            'abiertas',
+            'enProceso',
+            'cerradas',
+            'altaPrioridad',
+            'prioridades',
+            'estados',
+            'filterUrls'
+        ));
     }
     
-    if (!empty($estados)) {
-        $query->whereIn('estado', $estados);
+    private function buildFilterUrl($type, $value, $currentFilters)
+    {
+        $arr = $currentFilters;
+        
+        if (in_array($value, $arr)) {
+            $arr = array_filter($arr, fn($v) => $v !== $value);
+        } else {
+            $arr[] = $value;
+        }
+    
+        $params = request()->except($type);
+        
+        if (!empty($arr)) {
+            $params[$type] = $arr;
+        }
+    
+        return route('dashboard', $params);
     }
-    
-    $incidencias = $query->orderBy('created_at', 'desc')->get();
-    
-    // Stats sobre el TOTAL de TODAS las incidencias
-    $altaPrioridad = Incidencia::where('prioridad', 'alta')->count();
-    $abiertas = Incidencia::where('estado', 'abierta')->count();
-    $enProceso = Incidencia::where('estado', 'en_proceso')->count();
-    $cerradas = Incidencia::where('estado', 'cerrada')->count();
-    
-    // Calcular URLs de filtros
-    $filterUrls = [
-        'critical' => $this->buildFilterUrl('prioridad', 'alta', $prioridades),
-        'open' => $this->buildFilterUrl('estado', 'abierta', $estados),
-        'inProgress' => $this->buildFilterUrl('estado', 'en_proceso', $estados),
-        'closed' => $this->buildFilterUrl('estado', 'cerrada', $estados),
-    ];
-    
-    return view('dashboard', compact(
-        'incidencias',
-        'abiertas',
-        'enProceso',
-        'cerradas',
-        'altaPrioridad',
-        'prioridades',
-        'estados',
-        'filterUrls'
-    ));
-}
-private function buildFilterUrl($type, $value, $currentFilters)
-{
-    $arr = $currentFilters;
-    if (in_array($value, $arr)) {
-        $arr = array_filter($arr, fn($v) => $v !== $value);
-    } else {
-        $arr[] = $value;
-    }
-    
-    $params = request()->except($type);
-    if (!empty($arr)) {
-        $params[$type] = $arr;
-    }
-    
-    return route('dashboard', $params);
-}
 }
