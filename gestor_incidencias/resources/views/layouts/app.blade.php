@@ -1,36 +1,49 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                @yield('content') <!-- It was Slot before -->
-            </main>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Incident Manager')</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#e8e6e3',
+                        'cream-dark': '#d4d2cf',
+                        'gray-custom': '#666666',
+                    },
+                    fontFamily: {
+                        mono: ['IBM Plex Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'IBM Plex Mono', monospace; }
+    </style>
+</head>
+<body class="bg-cream min-h-screen">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="border-3 border-black bg-white mb-6">
+            <div class="px-6 py-4 flex items-center justify-between border-b-2 border-black">
+                <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
+                <div class="text-right text-xs">
+                    <div>v2.1 | {{ date('Y.m.d H:i') }}</div>
+                </div>
+            </div>
+            <div class="px-6 py-3 bg-cream-dark text-xs flex items-center gap-2">
+                <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
+                <span>SYSTEM ONLINE</span>
+                <span class="ml-4">USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
+            </div>
         </div>
-    </body>
+        <!-- Main -->
+        @yield('content')
+    </div>
+</body>
 </html>
