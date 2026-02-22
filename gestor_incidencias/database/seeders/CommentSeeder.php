@@ -55,12 +55,12 @@ class CommentSeeder extends Seeder
         
         // === INCIDENCIA 3: Teclado no funciona ===
         $c2 = Comment::create([
-            'user_id' => $malmental->id,
+            'user_id' => $salem->id,
             'incidencia_id' => $incidentes['Teclado no funciona']->id,
             'contenido' => 'Ya pedí teclado nuevo, llega mañana.'
         ]);
         Comment::create([
-            'user_id' => $salem->id,
+            'user_id' => $malmental->id,
             'incidencia_id' => $incidentes['Teclado no funciona']->id,
             'parent_id' => $c2->id,
             'contenido' => 'Gracias por la gestión!'
@@ -81,7 +81,7 @@ class CommentSeeder extends Seeder
         
         // === INCIDENCIA 7: No enciende el PC ===
         $c4 = Comment::create([
-            'user_id' => $salem->id,
+            'user_id' => $malmental->id,
             'incidencia_id' => $incidentes['No enciende el PC']->id,
             'contenido' => 'El cable de alimentación está bien conectado?'
         ]);
@@ -158,7 +158,7 @@ class CommentSeeder extends Seeder
             'contenido' => 'Revisando el servidor de mensajería ahora.'
         ]);
         Comment::create([
-            'user_id' => $salem->id,
+            'user_id' => $malmental->id,
             'incidencia_id' => $incidentes['Mensajes no llegan']->id,
             'parent_id' => $c8->id,
             'contenido' => 'Gracias por la rapidez!'
