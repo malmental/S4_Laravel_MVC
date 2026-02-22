@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('incidencias', function (Blueprint $table) {
-        $table->id();
-
-        $table->string('titulo');
-        $table->text('descripcion');
-
-        $table->enum('estado', ['abierta', 'en_proceso', 'cerrada'])->default('abierta');
-        $table->enum('prioridad', ['baja', 'media', 'alta'])->default('media');
-
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
-        $table->timestamps();
+        Schema::create('incidencias', function (Blueprint $table) {
+            $table->id();
+            $table->string('titulo');
+            $table->text('descripcion');
+            $table->enum('estado', ['abierta', 'en_proceso', 'cerrada'])->default('abierta');
+            $table->enum('prioridad', ['baja', 'media', 'alta'])->default('media');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
