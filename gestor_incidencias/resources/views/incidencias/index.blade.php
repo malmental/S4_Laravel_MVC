@@ -26,21 +26,21 @@
                     {{ $incidencia->estado }}
                 </span>
             </div>
-            <div class="col-span-3 flex gap-2">
-                <a href="{{ route('incidencias.show', $incidencia->id) }}" class="px-3 py-1 border-2 border-black bg-white text-xs hover:bg-cream-dark">Ver</a>
-                <a href="{{ route('incidencias.edit', $incidencia->id) }}" class="px-3 py-1 border-2 border-black bg-white text-xs hover:bg-cream-dark">Editar</a>
-                <form action="{{ route('incidencias.destroy', $incidencia->id) }}" method="POST" class="inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="px-3 py-1 border-2 border-black bg-black text-white text-xs hover:bg-gray-800" onclick="return confirm('¿Eliminar?')">X</button>
-                </form>
-            </div>
+            <div class="col-span-3 flex gap-2 justify-end">
+    <a href="{{ route('incidencias.edit', $incidencia->id) }}" class="px-4 py-2 border-2 border-black bg-white text-sm hover:bg-cream-dark">Editar</a>
+    <form action="{{ route('incidencias.destroy', $incidencia->id) }}" method="POST" class="inline">
+        @csrf @method('DELETE')
+        <button type="submit" class="px-4 py-2 border-2 border-black bg-black text-white text-sm hover:bg-gray-800" onclick="return confirm('¿Eliminar?')">X</button>
+
+    </form>
+</div>
         </div>
         @empty
         <div class="px-6 py-8 text-center">No hay incidencias.</div>
         @endforelse
     </div>
     <div class="px-6 py-4 border-t-2 border-black bg-cream-dark">
-        <a href="{{ route('dashboard') }}" class="text-xs underline">← Volver al Dashboard</a>
+        <a href="{{ route('dashboard') }}" class="text-sm underline">← Volver al Dashboard</a>
     </div>
 </div>
 @endsection
