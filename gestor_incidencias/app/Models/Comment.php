@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'contenido',
         'user_id',
-        'incidencia_id'
+        'incidencia_id',
+        'parent_id',
+        'contenido'
     ];
 
     public function user()
@@ -25,8 +24,18 @@ class Comment extends Model
         return $this->belongsTo(Incidencia::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
     public function replies()
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id')->with('replies');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

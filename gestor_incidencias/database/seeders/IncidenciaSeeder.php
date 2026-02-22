@@ -20,6 +20,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Error en el login',
             'descripcion' => 'No puedo entrar con mi cuenta de Google',
             'estado' => 'en_proceso',
+            'prioridad' => 'alta',
             'user_id' => $user->id
         ]);
 
@@ -27,6 +28,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Pantalla azul',
             'descripcion' => 'Al abrir el panel de control explota todo',
             'estado' => 'en_proceso',
+            'prioridad' => 'media',
             'user_id' => $user->id
         ]);
 
@@ -40,6 +42,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Teclado no funciona',
             'descripcion' => 'Se derramó café y la tecla Enter no responde',
             'estado' => 'abierta',
+            'prioridad' => 'alta',
             'user_id' => $user2->id
         ]);
 
@@ -47,6 +50,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Internet lento',
             'descripcion' => 'En la oficina del fondo no llega el WiFi',
             'estado' => 'abierta',
+            'prioridad' => 'baja',
             'user_id' => $user2->id
         ]);
 
@@ -60,6 +64,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Error de impresión',
             'descripcion' => 'La impresora no imprime correctamente',
             'estado' => 'cerrada',
+            'prioridad' => 'alta',
             'user_id' => $user3->id
         ]);
 
@@ -67,6 +72,7 @@ class IncidenciaSeeder extends Seeder
             'titulo' => 'Correo no sincroniza',
             'descripcion' => 'Mi correo no se actualiza con los nuevos mensajes',
             'estado' => 'cerrada',
+            'prioridad' => 'baja',
             'user_id' => $user3->id
         ]);
     }
