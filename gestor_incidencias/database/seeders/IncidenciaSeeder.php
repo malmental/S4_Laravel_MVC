@@ -50,6 +50,7 @@ class IncidenciaSeeder extends Seeder
             'prioridad' => 'alta',
             'user_id' => $malmental->id
         ]);
+        
         // Incidencia 4 - Malo Mentalo
         Incidencia::create([
             'titulo' => 'Internet lento',
@@ -58,6 +59,7 @@ class IncidenciaSeeder extends Seeder
             'prioridad' => 'baja',
             'user_id' => $malmental->id
         ]);
+        
         // Incidencia 5 - Dungeon Goblin
         Incidencia::create([
             'titulo' => 'Error de impresión',
@@ -128,6 +130,7 @@ class IncidenciaSeeder extends Seeder
             'prioridad' => 'media',
             'user_id' => $dungeon->id
         ]);
+        
         // Incidencia 13 - Salem
         Incidencia::create([
             'titulo' => 'Cámara web no funciona',
