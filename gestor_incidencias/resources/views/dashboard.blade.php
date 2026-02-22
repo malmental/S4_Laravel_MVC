@@ -1,5 +1,7 @@
 @php
 $user = auth()->user();
+$prioridades = $prioridades ?? [];
+$estados = $estados ?? [];
 use Illuminate\Support\Str;
 @endphp
 
@@ -27,46 +29,53 @@ use Illuminate\Support\Str;
             }
         }
     </script>
+    
     <style>
         body {
             font-family: 'IBM Plex Mono', monospace;
         }
     </style>
+
 </head>
-<!-- Modal Overlay -->
-<div id="incidenciaModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-    <div class="border-3 border-black bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <!-- Header -->
-        <div class="px-6 py-4 border-b-2 border-black bg-cream-dark flex justify-between items-center">
-            <h2 id="modalTitulo" class="text-lg font-semibold uppercase">INC-001</h2>
-            <button onclick="cerrarModal()" class="text-2xl font-bold hover:text-gray-600">&times;</button>
-        </div>
+
+    <!-- Modal Overlay -->
+    <div id="incidenciaModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="border-3 border-black bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         
-        <!-- Contenido -->
-        <div class="p-6">
-            <p id="modalDescripcion" class="mb-4 text-sm"></p>
-            <div class="flex gap-4 mb-4">
-                <span id="modalPrioridad" class="px-2 py-1 border border-black text-xs uppercase"></span>
-                <span id="modalEstado" class="px-2 py-1 border border-black text-xs uppercase"></span>
+            <!-- Header -->
+            <div class="px-6 py-4 border-b-2 border-black bg-cream-dark flex justify-between items-center">
+                <h2 id="modalTitulo" class="text-lg font-semibold uppercase">INC-001</h2>
+                <button onclick="cerrarModal()" class="text-2xl font-bold hover:text-gray-600">&times;</button>
             </div>
-            <div class="text-xs text-gray-500 mb-4">Creador: <span id="modalCreador"></span></div>
-            
-            <!-- Comentarios -->
-            <div class="border-t border-gray-300 pt-4">
-                <h3 class="text-xs uppercase font-semibold mb-3">Comentarios</h3>
-                <div id="modalComentarios" class="space-y-3 max-h-48 overflow-y-auto"></div>
+
+                <!-- Contenido -->
+                <div class="p-6">
+                        <p id="modalDescripcion" class="mb-4 text-sm"></p>
+                        <div class="flex gap-4 mb-4">
+                            <span id="modalPrioridad" class="px-2 py-1 border border-black text-xs uppercase"></span>
+                            <span id="modalEstado" class="px-2 py-1 border border-black text-xs uppercase"></span>
+                    </div>
+
+                    <div class="text-xs text-gray-500 mb-4">Creador: <span id="modalCreador"></span></div>
+
+                    <!-- Comentarios -->
+                    <div class="border-t border-gray-300 pt-4">
+                        <h3 class="text-xs uppercase font-semibold mb-3">Comentarios</h3>
+                        
+                    <div id="modalComentarios" class="space-y-3 max-h-48 overflow-y-auto"></div>
                 
-                <!-- Formulario nuevo comentario -->
-                <form method="POST" action="{{ route('comments.store') }}" class="mt-4">
-                    @csrf
-                    <input type="hidden" id="modalIncidenciaId" name="incidencia_id">
-                    <textarea name="contenido" placeholder="Añadir comentario..." class="w-full border-2 border-black p-2 text-sm bg-cream" required></textarea>
-                    <button type="submit" class="mt-2 px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase">Comentar</button>
-                </form>
+                    <!-- Formulario nuevo comentario -->
+                    <form method="POST" action="{{ route('comments.store') }}" class="mt-4">
+                        @csrf
+                        <input type="hidden" id="modalIncidenciaId" name="incidencia_id">
+                        <textarea name="contenido" placeholder="Añadir comentario..." class="w-full border-2 border-black p-2 text-sm bg-cream" required></textarea>
+                        <button type="submit" class="mt-2 px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase">Comentar</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 <script>
 function abrirModal(incidencia) {
     document.getElementById('modalTitulo').textContent = 'INC-' + String(incidencia.id).padStart(3, '0');
@@ -120,34 +129,34 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            
-            <!-- Critical (Prioridad Alta) -->
-            <div class="border-2 border-black bg-white p-6 text-center">
-                <div class="text-xs uppercase tracking-wide text-gray-custom mb-3">Critical</div>
+    
+            <!-- Critical -->
+            <a href="{{ $filterUrls['critical'] }}" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+                <div class="text-xs uppercase tracking-wide mb-3">Critical</div>
                 <div class="text-5xl font-light mb-2">{{ str_pad($altaPrioridad ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs text-gray-custom">High priority incidents</div>
-            </div>
-            
+                <div class="text-xs">High priority incidents</div>
+            </a>
+    
             <!-- Open -->
-            <div class="border-2 border-black bg-white p-6 text-center">
-                <div class="text-xs uppercase tracking-wide text-gray-custom mb-3">Open</div>
+            <a href="{{ $filterUrls['open'] }}" class="block border-2 border-black {{ in_array('abierta', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+                <div class="text-xs uppercase tracking-wide mb-3">Open</div>
                 <div class="text-5xl font-light mb-2">{{ str_pad($abiertas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs text-gray-custom">Pending assignment</div>
-            </div>
-            
+                <div class="text-xs">Open incidents</div>
+            </a>
+    
             <!-- In Progress -->
-            <div class="border-2 border-black bg-white p-6 text-center">
-                <div class="text-xs uppercase tracking-wide text-gray-custom mb-3">In Progress</div>
+            <a href="{{ $filterUrls['inProgress'] }}" class="block border-2 border-black {{ in_array('en_proceso', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+                <div class="text-xs uppercase tracking-wide mb-3">In process</div>
                 <div class="text-5xl font-light mb-2">{{ str_pad($enProceso ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs text-gray-custom">Currently being handled</div>
-            </div>
-            
-            <!-- Resolved -->
-            <div class="border-2 border-black bg-white p-6 text-center">
-                <div class="text-xs uppercase tracking-wide text-gray-custom mb-3">Resolved</div>
+                <div class="text-xs">In process incidents</div>
+            </a>
+    
+            <!-- Closed -->
+            <a href="{{ $filterUrls['closed'] }}" class="block border-2 border-black {{ in_array('cerrada', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+                <div class="text-xs uppercase tracking-wide mb-3">Closed</div>
                 <div class="text-5xl font-light mb-2">{{ str_pad($cerradas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs text-gray-custom">Closed incidents</div>
-            </div>
+                <div class="text-xs">Closed incidents</div>
+            </a>
         </div>
 
         <!-- Filter & Search
