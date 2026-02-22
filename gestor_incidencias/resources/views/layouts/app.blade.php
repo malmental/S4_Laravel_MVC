@@ -37,11 +37,16 @@
                     <div>v2.1 | {{ date('Y.m.d H:i') }}</div>
                 </div>
             </div>
-            <div class="px-6 py-3 bg-cream-dark text-xs flex items-center gap-2">
-                <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
-                <span>SYSTEM ONLINE</span>
-                <span class="ml-4">USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
-            </div>
+            <div class="px-6 py-4 bg-cream-dark text-sm flex items-center justify-between">
+    <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
+        <span class="font-semibold">SYSTEM ONLINE</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
+        <span>LAST SYNC: 2 MIN AGO</span>
+    </div>
+</div>
         </div>
         <!-- Main -->
         @yield('content')

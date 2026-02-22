@@ -17,12 +17,12 @@
                 <div class="text-xs text-gray-500">{{ Str::limit($incidencia->descripcion, 50) }}</div>
             </div>
             <div class="col-span-2">
-                <span class="px-2 py-1 border border-black text-xs uppercase {{ $incidencia->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }}">
+                <span class="px-2 py-1 border-2 border-black text-xs uppercase {{ $incidencia->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }}">
                     {{ $incidencia->prioridad }}
                 </span>
             </div>
             <div class="col-span-2">
-                <span class="px-2 py-1 border border-black text-xs uppercase bg-white">
+                <span class="px-2 py-1 border-2 border-black text-xs uppercase bg-white">
                     {{ $incidencia->estado }}
                 </span>
             </div>

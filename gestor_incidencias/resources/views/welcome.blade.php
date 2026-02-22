@@ -33,16 +33,17 @@
     <div class="w-full max-w-2xl">
         <!-- Main Card -->
         <div class="border-3 border-black bg-white">
+            
             <!-- Header -->
             <div class="border-b-2 border-black bg-cream-dark px-8 py-6">
                 <div class="flex flex-col items-center">
-    <svg class="w-20 h-20 mb-3" viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="7" cy="17" r="5"/>
-        <path d="M15 2a7 7 0 0 0-6.88 5.737a6 6 0 0 1 8.143 8.143A6.997 6.997 0 0 0 15 2" opacity=".25"/>
-        <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
-    </svg>
-    <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
-</div>
+                        <svg class="w-20 h-20 mb-3" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="7" cy="17" r="5"/>
+                        <path d="M15 2a7 7 0 0 0-6.88 5.737a6 6 0 0 1 8.143 8.143A6.997 6.997 0 0 0 15 2" opacity=".25"/>
+                        <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
+                        </svg>
+                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
+                </div>
                 <p class="text-sm text-gray-custom text-center mt-2">Sistema de Gestión de Incidencias v2.1</p>
             </div>
 
