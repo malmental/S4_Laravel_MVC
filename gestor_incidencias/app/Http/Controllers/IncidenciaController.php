@@ -100,7 +100,7 @@ class IncidenciaController extends Controller
     public function metricas(Request $request)
     {
         $user = auth()->user();
-        $query = Incidencia::query()->with('user', 'comments.user', 'comments.replies', 'comments.replies.user');
+        $query = Incidencia::query()->with('user', 'tags', 'comments.user', 'comments.replies', 'comments.replies.user');
     
         // Filtros acumulativos
         $prioridades = $request->input('prioridad', []);
