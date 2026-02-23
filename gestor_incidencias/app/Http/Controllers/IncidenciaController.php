@@ -24,18 +24,32 @@ class IncidenciaController extends Controller
     
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'estado' => 'required|in:abierta,en_proceso,cerrada',
-            'prioridad' => 'required|in:baja,media,alta',
+        // Crear la incidencia
+        $incidencia = Incidencia::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'prioridad' => $request->prioridad,
+            'estado' => $request->estado,
         ]);
-        
-        $validated['user_id'] = Auth::id();
-        
-        Incidencia::create($validated);
-        
-        return redirect()->route('incidencias.index')->with('success', 'Incidencia creada correctamente');
+
+        // Procesar tags si existen => explode(' ', $request->tags) => #bug #backend #urgent => [#bug, #backend, #urgent]
+        if ($request->filled('tags')) {
+
+            $tagNames = collect(explode(' ', $request->tags))
+                ->map(fn($tag) => strtolower(trim(str_replace('#', '', $tag))))
+                ->filter()
+                ->unique();
+
+            $tagIds = [];
+
+            foreach ($tagNames as $name) {
+                $tag = Tag::firstOrCreate(['nombre' => $nombre]);
+                $tagIds[] = $tag->id;
+            }
+            $incidencia->tags()->sync($tagIds);
+        }
+
+        return redirect()->route('incidencias.index');
     }
     
     public function show(Incidencia $incidencia)
