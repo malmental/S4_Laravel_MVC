@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Incident Manager</title>
-    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M15 2a7 7 0 0 0-6.88 5.737a6 6 0 0 1 8.143 8.143A6.997 6.997 0 0 0 15 2'/><circle cx='7' cy='17' r='5' fill='currentColor'/><path d='M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7' opacity='.5'/></svg>" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
@@ -53,6 +53,12 @@ use Illuminate\Support\Str;
                 <span id="modalEstado" class="px-2 py-1 border border-black text-xs uppercase"></span>
             </div>
             <div class="text-xs text-gray-500 mb-4">Creador: <span id="modalCreador"></span></div>
+
+            <!-- Tags -->
+            <div class="mb-4">
+                <span class="text-xs text-gray-500 mr-2">Tags:</span>
+                <span id="modalTags"></span>
+            </div>
             
             <!-- Comentarios -->
             <div class="border-t border-gray-300 pt-4">
@@ -72,14 +78,24 @@ use Illuminate\Support\Str;
 </div>
 
 <script>
+
+
 function abrirModal(incidencia) {
+// Renderizar tags
+const tagsSpan = document.getElementById('modalTags');
+if (incidencia.tags && incidencia.tags.length > 0) {
+    tagsSpan.innerHTML = incidencia.tags.map(tag => 
+        `<span class="px-2 py-1 text-xs bg-gray-300/50 text-gray-700 rounded mr-1">#${tag.nombre}</span>`).join('');
+    } else {
+        tagsSpan.innerHTML = '<span class="text-xs text-gray-400">—</span>';
+    }
     document.getElementById('modalTitulo').textContent = 'INC-' + String(incidencia.id).padStart(3, '0');
     document.getElementById('modalDescripcion').textContent = incidencia.descripcion;
     document.getElementById('modalPrioridad').textContent = incidencia.prioridad;
     document.getElementById('modalEstado').textContent = incidencia.estado;
     document.getElementById('modalCreador').textContent = incidencia.user ? incidencia.user.name : 'Unknown';
     document.getElementById('modalIncidenciaId').value = incidencia.id;
-    
+
     // Renderizar comentarios principales Y respuestas
     const comentariosDiv = document.getElementById('modalComentarios');
     if (incidencia.comments && incidencia.comments.length > 0) {
@@ -91,26 +107,26 @@ function abrirModal(incidencia) {
                 </div>
             `;
             
-            // Añadir respuestas si existen
-            if (c.replies && c.replies.length > 0) {
-                c.replies.forEach(r => {
-                    html += `
-                        <div class="border border-gray-300 p-3 ml-6 mb-2 bg-cream-dark">
-                            <div class="text-xs font-bold">${r.user ? r.user.name : 'Usuario'}</div>
-                            <div class="text-sm">${r.contenido}</div>
-                        </div>
-                    `;
-                });
-            }
+        // Añadir respuestas si existen
+        if (c.replies && c.replies.length > 0) {
+            c.replies.forEach(r => {
+                html += `
+                    <div class="border border-gray-300 p-3 ml-6 mb-2 bg-cream-dark">
+                        <div class="text-xs font-bold">${r.user ? r.user.name : 'Usuario'}</div>
+                        <div class="text-sm">${r.contenido}</div>
+                    </div>
+                `;
+            });
+        }
             
-            return html;
-        }).join('');
+        return html;
+    }).join('');
     } else {
-        comentariosDiv.innerHTML = '<p class="text-xs text-gray-500">Sin comentarios</p>';
+    comentariosDiv.innerHTML = '<p class="text-xs text-gray-500">Sin comentarios</p>';
     }
-    
-    document.getElementById('incidenciaModal').classList.remove('hidden');
+document.getElementById('incidenciaModal').classList.remove('hidden');
 }
+
 function cerrarModal() {
     document.getElementById('incidenciaModal').classList.add('hidden');
 }
@@ -123,7 +139,6 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
 
 <body class="bg-cream min-h-screen p-6">
     <div class="max-w-7xl mx-auto">
-        
         <!-- Header -->
         <div class="border-3 border-black bg-white mb-6">
             <div class="px-6 py-4 flex items-center justify-between border-b-2 border-black">
@@ -136,110 +151,136 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
             </div>
             
             <div class="px-6 py-4 bg-cream-dark text-sm flex items-center justify-between">
-    <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
-        <span class="font-semibold">SYSTEM ONLINE</span>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
+                    <span class="font-semibold">SYSTEM ONLINE</span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                <span>USER: {{ strtoupper(auth()->user()->name) }}</span>
+                <span>LAST SYNC: 2 MIN AGO</span>
+                <a href="{{ route('incidencias.index') }}" class="ml-4 px-4 py-2 border border-black bg-black text-white text-sm uppercase hover:bg-gray-800">My Incidents</a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="px-4 py-2 border border-black bg-white text-sm uppercase hover:bg-gray-200">Logout</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="flex items-center gap-4">
-        <span>USER: {{ strtoupper(auth()->user()->name) }}</span>
-        <span>LAST SYNC: 2 MIN AGO</span>
-        <a href="{{ route('incidencias.index') }}" class="ml-4 px-4 py-2 border border-black bg-black text-white text-sm uppercase hover:bg-gray-800">My Incidents</a>
-        <form method="POST" action="{{ route('logout') }}" class="inline">
-            @csrf
-            <button type="submit" class="px-4 py-2 border border-black bg-white text-sm uppercase hover:bg-gray-200">Logout</button>
+        
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+
+        <!-- Critical -->
+        <a href="{{ $filterUrls['critical'] }}" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+            <div class="text-xs uppercase tracking-wide mb-3">Critical</div>
+            <div class="text-5xl font-light mb-2">{{ str_pad($altaPrioridad ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
+            <div class="text-xs">High priority incidents</div>
+        </a>
+            
+        <!-- Open -->
+        <a href="{{ $filterUrls['open'] }}" class="block border-2 border-black {{ in_array('abierta', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+            <div class="text-xs uppercase tracking-wide mb-3">Open</div>
+            <div class="text-5xl font-light mb-2">{{ str_pad($abiertas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
+            <div class="text-xs">Open incidents</div>
+        </a>
+            
+        <!-- In Progress -->
+        <a href="{{ $filterUrls['inProgress'] }}" class="block border-2 border-black {{ in_array('en_proceso', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+            <div class="text-xs uppercase tracking-wide mb-3">In process</div>
+            <div class="text-5xl font-light mb-2">{{ str_pad($enProceso ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
+            <div class="text-xs">In process incidents</div>
+        </a>
+
+        <!-- Closed -->
+        <a href="{{ $filterUrls['closed'] }}" class="block border-2 border-black {{ in_array('cerrada', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
+            <div class="text-xs uppercase tracking-wide mb-3">Closed</div>
+            <div class="text-5xl font-light mb-2">{{ str_pad($cerradas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>                <div class="text-xs">Closed incidents</div>
+        </a>
+    </div>
+
+    <!-- Search by Tag -->
+    <div class="mb-6 border-2 border-black bg-white p-4">
+        <form method="GET" action="{{ route('dashboard') }}" class="flex gap-4 items-center">
+            <input 
+            type="text"
+            name="tag"
+            placeholder="Buscar por hashtag..."
+            value="{{ request('tag') }}"
+            class="border-2 border-black p-2 text-sm flex-1">
+                <button class="px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase">
+                    Buscar
+                </button>
         </form>
     </div>
-</div>
-        </div>
-        
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            
-            <!-- Critical -->
-            <a href="{{ $filterUrls['critical'] }}" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
-                <div class="text-xs uppercase tracking-wide mb-3">Critical</div>
-                <div class="text-5xl font-light mb-2">{{ str_pad($altaPrioridad ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs">High priority incidents</div>
-            </a>
-            
-            <!-- Open -->
-            <a href="{{ $filterUrls['open'] }}" class="block border-2 border-black {{ in_array('abierta', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
-                <div class="text-xs uppercase tracking-wide mb-3">Open</div>
-                <div class="text-5xl font-light mb-2">{{ str_pad($abiertas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs">Open incidents</div>
-            </a>
-            
-            <!-- In Progress -->
-            <a href="{{ $filterUrls['inProgress'] }}" class="block border-2 border-black {{ in_array('en_proceso', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
-                <div class="text-xs uppercase tracking-wide mb-3">In process</div>
-                <div class="text-5xl font-light mb-2">{{ str_pad($enProceso ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs">In process incidents</div>
-            </a>
-            
-            <!-- Closed -->
-            <a href="{{ $filterUrls['closed'] }}" class="block border-2 border-black {{ in_array('cerrada', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
-                <div class="text-xs uppercase tracking-wide mb-3">Closed</div>
-                <div class="text-5xl font-light mb-2">{{ str_pad($cerradas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-xs">Closed incidents</div>
-            </a>
-        </div>
-        
-        <!-- Incidents Table -->
-        <div class="border-3 border-black bg-white">
-            
-            <!-- Table Header -->
-            <div class="grid grid-cols-12 gap-4 px-6 py-4 bg-cream-dark border-b-2 border-black text-xs uppercase tracking-wide font-semibold">
-                <div class="col-span-1">ID</div>
-                <div class="col-span-5">Title</div>
-                <div class="col-span-2">Priority</div>
-                <div class="col-span-2">Status</div>
-                <div class="col-span-2">Assigned</div>
+
+    <!-- Incidents Table -->
+    <div class="border-3 border-black bg-white">
+
+        <!-- Table Header -->
+        <div class="flex items-center gap-2 md:gap-4 px-2 md:px-6 py-4 bg-cream-dark border-b-2 border-black text-xs uppercase tracking-wide font-semibold">
+
+            <!-- ID -->
+            <div class="w-16 md:w-20 shrink-0 hidden md:block">ID</div>
+
+            <!-- Title - 50% -->
+            <div class="flex-1 min-w-[200px]">Title</div>
+
+            <!-- Mitad derecha (50%) - 3 columnas iguales -->
+            <div class="flex-1 flex justify-between gap-2 md:gap-4">
+                <div class="flex-1 shrink-0 text-center">Tags</div>
+                <div class="flex-1 shrink-0 text-center">Priority</div>
+                <div class="flex-1 shrink-0 text-center">Status</div>
             </div>
-            
-            <!-- Table Rows -->
-            @forelse($incidencias as $inc)
-            <div class="grid grid-cols-12 gap-4 px-6 py-5 hover:bg-cream-dark cursor-pointer" onclick='abrirModal(@json($inc))'>
-                <div class="col-span-1 font-semibold text-sm">INC-{{ str_pad($inc->id, 3, '0', STR_PAD_LEFT) }}</div>
-                <div class="col-span-5">
-                    <div class="font-medium text-sm mb-1">{{ $inc->titulo }}</div>
-                    <div class="text-xs text-gray-custom">{{ Str::limit($inc->descripcion, 60) }}</div>
-                </div>
-                <div class="col-span-2">
-                    <span class="inline-block px-3 py-1 border-2 border-black {{ $inc->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }} text-xs uppercase">
-                        {{ $inc->prioridad }}
-                    </span>
-                </div>
-                <div class="col-span-2">
-                    <span class="inline-block px-3 py-1 border-2 border-black bg-white text-xs uppercase">
-                        {{ $inc->estado }}
-                    </span>
-                </div>
-                <div class="col-span-2 flex items-center gap-2">
-                    <div class="w-7 h-7 border-2 border-black bg-cream-dark flex items-center justify-center text-xs font-bold">
-                        {{ strtoupper(substr($inc->user->name, 0, 2)) }}
-                    </div>
-                    <span class="text-xs">{{ $inc->user->name }}</span>
-                </div>
-            </div>
+        </div>
+
+        @forelse($incidencias as $inc)
+    <div class="flex items-center gap-2 md:gap-4 px-2 md:px-6 py-3 md:py-5 hover:bg-cream-dark cursor-pointer" onclick='abrirModal(@json($inc))'>
+    
+    <!-- ID -->
+    <div class="w-16 md:w-20 shrink-0 font-semibold text-sm hidden md:block">
+        INC-{{ str_pad($inc->id, 3, '0', STR_PAD_LEFT) }}
+    </div>
+    
+    <!-- Title - 50% -->
+    <div class="flex-1 min-w-[200px]">
+        <div class="font-medium text-sm mb-1">{{ $inc->titulo }}</div>
+    </div>
+    
+    <!-- Mitad derecha (50%) - 3 columnas iguales -->
+    <div class="flex-1 flex justify-between gap-2 md:gap-4">
+        <!-- Tags -->
+        <div class="flex-1 shrink-0 flex flex-wrap gap-1 justify-center">
+            @forelse($inc->tags as $tag)
+                <span class="px-2 py-1 text-xs bg-gray-300/50 text-gray-700 rounded">
+    #{{ $tag->nombre }}
+</span>
             @empty
-            <div class="px-6 py-8 text-center text-gray-custom">No hay incidencias.</div>
+                <span class="text-xs text-gray-400">—</span>
             @endforelse
         </div>
         
-        <!-- Bottom Actions
-        <div class="mt-6 flex items-center justify-end gap-4">
-            <a href="{{ route('incidencias.index') }}" class="px-8 py-4 border-2 border-black bg-black text-white text-sm uppercase tracking-wide font-semibold hover:bg-gray-800 transition-colors">
-                My Incidents
-            </a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="px-8 py-4 border-2 border-black bg-white text-sm uppercase tracking-wide font-semibold hover:bg-cream-dark transition-colors">
-                    Logout
-                </button>
-            </form>
+        <!-- Priority -->
+        <div class="flex-1 shrink-0 flex justify-center">
+            <span class="inline-block px-2 py-1 border-2 border-black {{ $inc->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }} text-xs uppercase">
+                {{ $inc->prioridad }}
+            </span>
         </div>
-    </div> --->
-    
+        
+        <!-- Status -->
+        <div class="flex-1 shrink-0 flex justify-center">
+            <span class="inline-block px-2 py-1 border-2 border-black bg-white text-xs uppercase">
+                {{ $inc->estado }}
+            </span>
+        </div>
+    </div>
+</div>
+@empty
+<div class="px-6 py-8 text-center text-gray-custom">No hay incidencias.</div>
+@endforelse
+
+</div>
+
     <script>
         // Update time in header
         function updateTime() {
