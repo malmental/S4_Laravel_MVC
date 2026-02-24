@@ -26,9 +26,11 @@
     <style>
         body { font-family: 'IBM Plex Mono', monospace; }
     </style>
+
 </head>
 <body class="bg-cream min-h-screen">
     <div class="max-w-7xl mx-auto p-6">
+        
         <!-- Header -->
         <div class="border-3 border-black bg-white mb-6">
             <div class="px-6 py-4 flex items-center justify-between border-b-2 border-black">
@@ -37,17 +39,30 @@
                     <div>v2.1 | {{ date('Y.m.d H:i') }}</div>
                 </div>
             </div>
+            
             <div class="px-6 py-4 bg-cream-dark text-sm flex items-center justify-between">
-    <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
-        <span class="font-semibold">SYSTEM ONLINE</span>
-    </div>
-    <div class="flex items-center gap-4">
-        <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
-        <span>LAST SYNC: 2 MIN AGO</span>
-    </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
+                <span class="font-semibold">SYSTEM ONLINE</span>
+            </div>
+            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4">
+                <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
+                <form method="POST" action="{{ route('profile.destroy') }}" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar tu usuario? Esta acción es irreversible.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-3 py-1 border border-red-600 bg-red-600 text-white text-xs uppercase hover:bg-red-700 ml-2">
+                        Destruir Usuario
+                    </button>
+                </form>
+    <span>LAST SYNC: 2 MIN AGO</span>
 </div>
+                <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
+                <span>LAST SYNC: 2 MIN AGO</span>
+            </div>
         </div>
+        
+    </div>
         <!-- Main -->
         @yield('content')
     </div>
