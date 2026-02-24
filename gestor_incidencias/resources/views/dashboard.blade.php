@@ -78,9 +78,8 @@ use Illuminate\Support\Str;
 </div>
 
 <script>
-
-
 function abrirModal(incidencia) {
+
 // Renderizar tags
 const tagsSpan = document.getElementById('modalTags');
 if (incidencia.tags && incidencia.tags.length > 0) {
@@ -126,7 +125,6 @@ if (incidencia.tags && incidencia.tags.length > 0) {
     }
 document.getElementById('incidenciaModal').classList.remove('hidden');
 }
-
 function cerrarModal() {
     document.getElementById('incidenciaModal').classList.add('hidden');
 }
@@ -200,7 +198,7 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
     </div>
 
     <!-- Search by Tag -->
-    <div class="mb-6 border-2 border-black bg-white p-4">
+    <div class="mb-6 border-2 border bg-white p-4">
         <form method="GET" action="{{ route('dashboard') }}" class="flex gap-4 items-center">
             <input 
             type="text"
@@ -253,8 +251,8 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
         <div class="flex-1 shrink-0 flex flex-wrap gap-1 justify-center">
             @forelse($inc->tags as $tag)
                 <span class="px-2 py-1 text-xs bg-gray-300/50 text-gray-700 rounded">
-    #{{ $tag->nombre }}
-</span>
+                    #{{ $tag->nombre }}
+                </span>
             @empty
                 <span class="text-xs text-gray-400">—</span>
             @endforelse
