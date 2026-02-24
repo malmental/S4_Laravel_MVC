@@ -32,7 +32,7 @@ class IncidenciaController extends Controller
             'estado' => $request->estado,
         ]);
 
-        // Procesar tags si existen => explode(' ', $request->tags) => #bug #backend #urgent => [#bug, #backend, #urgent]
+        // Procesar tags si existen
         if ($request->filled('tags')) {
 
             $tagNames = collect(explode(' ', $request->tags))
@@ -43,7 +43,7 @@ class IncidenciaController extends Controller
             $tagIds = [];
 
             foreach ($tagNames as $name) {
-                $tag = Tag::firstOrCreate(['nombre' => $nombre]);
+                $tag = Tag::firstOrCreate(['nombre' => $name]);
                 $tagIds[] = $tag->id;
             }
             $incidencia->tags()->sync($tagIds);
@@ -64,26 +64,48 @@ class IncidenciaController extends Controller
         if ($incidencia->user_id !== Auth::id()) {
             abort(403);
         }
-        
+
+        $incidencia->load('tags');
+
         return view('incidencias.edit', compact('incidencia'));
     }
     
     public function update(Request $request, Incidencia $incidencia)
     {
         if ($incidencia->user_id !== Auth::id()) {
-            abort(403);
+        abort(403);
         }
-        
+
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'estado' => 'required|in:abierta,en_proceso,cerrada',
             'prioridad' => 'required|in:baja,media,alta',
+            'tags' => 'nullable|string'
         ]);
-        
+
         $incidencia->update($validated);
-        
-        return redirect()->route('incidencias.index')->with('success', 'Incidencia actualizada correctamente');
+
+        if ($request->filled('tags')) {
+
+        $tags = collect(explode(' ', $request->tags))
+            ->map(fn($tag) => trim($tag))
+            ->filter()
+            ->map(function ($tagName) {
+                return \App\Models\Tag::firstOrCreate([
+                    'nombre' => strtolower($tagName)
+                ])->id;
+            });
+
+        $incidencia->tags()->sync($tags);
+
+        } else {
+            $incidencia->tags()->sync([]);
+        }
+
+        return redirect()
+            ->route('incidencias.index')
+            ->with('success', 'Incidencia actualizada correctamente');
     }
     
     public function destroy(Incidencia $incidencia)
@@ -113,16 +135,21 @@ class IncidenciaController extends Controller
         if (!empty($estados)) {
             $query->whereIn('estado', $estados);
         }
+
+            // Filtro por tag
+            if ($request->filled('tag')) {
+                $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('nombre', str_replace('#', '', $request->tag));
+                });
+            }       
     
         $incidencias = $query->orderBy('created_at', 'desc')->get();
     
-        // Stats sobre el TOTAL de TODAS las incidencias
         $altaPrioridad = Incidencia::where('prioridad', 'alta')->count();
         $abiertas = Incidencia::where('estado', 'abierta')->count();
         $enProceso = Incidencia::where('estado', 'en_proceso')->count();
         $cerradas = Incidencia::where('estado', 'cerrada')->count();
-    
-        // Calcular URLs de filtros
+
         $filterUrls = [
             'critical' => $this->buildFilterUrl('prioridad', 'alta', $prioridades),
             'open' => $this->buildFilterUrl('estado', 'abierta', $estados),
