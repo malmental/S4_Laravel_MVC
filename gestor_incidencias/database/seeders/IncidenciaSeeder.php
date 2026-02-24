@@ -8,22 +8,6 @@ class IncidenciaSeeder extends Seeder
 {
     public function run(): void
     {
-        // Obtener usuarios
-        $salem = User::firstOrCreate(
-            ['email' => 'salem@telsur.cl'],
-            ['name' => 'Salem', 'password' => bcrypt('password')]
-        );
-        
-        $malmental = User::firstOrCreate(
-            ['email' => 'malmental@telsur.cl'],
-            ['name' => 'Malo Mentalo', 'password' => bcrypt('password')]
-        );
-        
-        $dungeon = User::firstOrCreate(
-            ['email' => 'dungeongoblin@telsur.cl'],
-            ['name' => 'Dungeon Goblin', 'password' => bcrypt('password')]
-        );
-        
         // Incidencia 1 - Salem
         Incidencia::create([
             'titulo' => 'Error en el login',

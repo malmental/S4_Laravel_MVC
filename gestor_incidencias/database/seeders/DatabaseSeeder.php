@@ -10,8 +10,9 @@ class DatabaseSeeder extends Seeder
     {
         // Solo llamas al otro seeder aquí
         $this->call([
-            IncidenciaSeeder::class,
-            CommentSeeder::class,
+            UserSeeder::class,
+            // IncidenciaSeeder::class,
+            // CommentSeeder::class,
         ]);
     }
 }
