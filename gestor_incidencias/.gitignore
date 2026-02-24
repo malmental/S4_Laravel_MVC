@@ -22,3 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Añadir para update
+node_modules/
+vendor/
+.vscode/
