@@ -7,7 +7,7 @@
     </div>
     <form action="{{ route('incidencias.store') }}" method="POST" class="p-6 space-y-4">
         @csrf
-        
+
         <!-- Titulo -->
         <div>
             <label class="block text-sm uppercase mb-1">Título</label>
@@ -25,7 +25,7 @@
         <!-- TAGS -->
         <div class="mt-6">
             <label class="block text-sm tracking-widest">TAGS</label>
-            <input type="text" name="tags" placeholder="#bug #backend #urgent" class="w-full border-2 border-black p-2 bg-neutral-200 focus:outline-none">
+            <input type="text" name="tags" placeholder="bug, backend, urgent" class="w-full border-2 border-black p-2 bg-neutral-200 focus:outline-none">
 
             <p class="text-xs mt-2">
                 Separate tags with spaces
@@ -62,5 +62,5 @@
             </a>
         </div>
     </form>
-    </div>
+</div>
 @endsection
