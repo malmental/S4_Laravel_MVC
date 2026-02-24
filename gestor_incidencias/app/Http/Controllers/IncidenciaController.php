@@ -1,8 +1,11 @@
 <?php
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Incidencia;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
+
 class IncidenciaController extends Controller
 {
     public function index()
@@ -30,6 +33,7 @@ class IncidenciaController extends Controller
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
             'estado' => $request->estado,
+            'user_id' => Auth::id(),
         ]);
 
         // Procesar tags si existen
