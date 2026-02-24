@@ -137,11 +137,14 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
 
 <body class="bg-cream min-h-screen p-6">
     <div class="max-w-7xl mx-auto">
+        
         <!-- Header -->
         <div class="border-3 border-black bg-white mb-6">
             <div class="px-6 py-4 flex items-center justify-between border-b-2 border-black">
                 <h1 class="text-2xl font-semibold tracking-tight flex items-center gap-2">
+                    <a href="{{ route('home') }}">
                     INCIDENT MANAGER
+                    </a>
                 </h1>
                 <div class="text-right text-xs">
                     <div class="mb-1">v2.1 | {{ date('Y.m.d H:i') }}</div>
