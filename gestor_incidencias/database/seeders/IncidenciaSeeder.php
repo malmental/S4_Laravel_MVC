@@ -8,6 +8,10 @@ class IncidenciaSeeder extends Seeder
 {
     public function run(): void
     {
+        $salem = User::where('email', 'salem@telsur.cl')->first();
+        $malmental = User::where('email', 'malmental@telsur.cl')->first();
+        $dungeon = User::where('email', 'dungeongoblin@telsur.cl')->first();
+
         // Incidencia 1 - Salem
         Incidencia::create([
             'titulo' => 'Error en el login',
