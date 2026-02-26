@@ -45,6 +45,10 @@
         @empty
         <div class="px-6 py-8 text-center">No hay incidencias.</div>
         @endforelse
+        
+        <div class="px-6 py-4 border-t-2 border-black bg-cream-dark">
+            {{ $incidencias->links() }}
+        </div>
 
     </div>
     
