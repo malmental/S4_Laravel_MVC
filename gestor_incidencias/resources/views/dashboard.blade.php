@@ -35,6 +35,7 @@
 </div>
 
 <script>
+
 function abrirModal(incidencia) {
     const tagsSpan = document.getElementById('modalTags');
     if (incidencia.tags && incidencia.tags.length > 0) {
@@ -45,7 +46,15 @@ function abrirModal(incidencia) {
     }
     document.getElementById('modalTitulo').textContent = 'INC-' + String(incidencia.id).padStart(3, '0');
     document.getElementById('modalDescripcion').textContent = incidencia.descripcion;
-    document.getElementById('modalPrioridad').textContent = incidencia.prioridad;
+    
+    const prioridadEl = document.getElementById('modalPrioridad');
+    prioridadEl.textContent = incidencia.prioridad;
+    if (incidencia.prioridad === 'alta') {
+        prioridadEl.classList.add('bg-black', 'text-white');
+    } else {
+        prioridadEl.classList.remove('bg-black', 'text-white');
+    }
+    
     document.getElementById('modalEstado').textContent = incidencia.estado;
     document.getElementById('modalCreador').textContent = incidencia.user ? incidencia.user.name : 'Unknown';
     document.getElementById('modalIncidenciaId').value = incidencia.id;
@@ -71,6 +80,7 @@ function cerrarModal() {
 document.getElementById('incidenciaModal').addEventListener('click', function(e) {
     if (e.target === this) cerrarModal();
 });
+
 </script>
 
 <!-- Stats Grid -->
@@ -105,7 +115,7 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
     </form>
 </div>
 
-<!-- Incidents Table - SIN Editar ni X -->
+<!-- Incidents Table -->
 <div class="border-3 border-black bg-white">
     <div class="grid grid-cols-12 gap-4 px-6 py-4 bg-cream-dark border-b-2 border-black text-xs uppercase tracking-wide font-semibold">
         <div class="col-span-1">ID</div>
@@ -152,7 +162,12 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
     </div>
 </div>
 
+<div class="px-6 py-4 border-t-2 border-black bg-cream-dark">
+    {{ $incidencias->links() }}
+</div>
+
 <script>
+
     function updateTime() {
         const now = new Date();
         const formatted = now.getFullYear() + '.' + 
@@ -164,5 +179,6 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
     }
     setInterval(updateTime, 60000);
     updateTime();
+
 </script>
 @endsection
