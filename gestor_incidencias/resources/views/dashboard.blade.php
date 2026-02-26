@@ -158,12 +158,12 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
                 </div>
 
                 <div class="flex items-center gap-4">
-                <span>USER: {{ strtoupper(auth()->user()->name) }}</span>
-                <span>LAST SYNC: 2 MIN AGO</span>
+                    <span>USER: {{ strtoupper(auth()->user()->name) }}</span>
+                    <span>LAST SYNC: 2 MIN AGO</span>
                 <a href="{{ route('incidencias.index') }}" class="ml-4 px-4 py-2 border border-black bg-black text-white text-xs uppercase hover:bg-gray-800">My Incidents</a>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="px-4 py-2 border border-black bg-white text-xs uppercase hover:bg-gray-200">Logout</button>
+                    <button type="submit" class="px-8 py-2 border border-black bg-white text-xs uppercase hover:bg-gray-200">Logout</button>
                 </form>
             </div>
         </div>

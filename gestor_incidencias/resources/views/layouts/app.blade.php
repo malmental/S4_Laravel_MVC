@@ -45,7 +45,7 @@
                 <span class="inline-block w-2 h-2 bg-black rounded-full"></span>
                 <span class="font-semibold">SYSTEM ONLINE</span>
             </div>
-            <div class="flex items-center gap-4">
+
             <div class="flex items-center gap-4">
                 <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
                 <form method="POST" action="{{ route('profile.destroy') }}" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar tu usuario? Esta acción es irreversible.')">
@@ -55,15 +55,12 @@
                         Destruir Usuario
                     </button>
                 </form>
-    <span>LAST SYNC: 2 MIN AGO</span>
-</div>
-                <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
                 <span>LAST SYNC: 2 MIN AGO</span>
             </div>
+
         </div>
-        
     </div>
-        <!-- Main -->
+        <!-- Main Layout -->
         @yield('content')
     </div>
 </body>

@@ -15,6 +15,7 @@
         @forelse($incidencias as $incidencia)
         <div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-cream-dark items-center">
             <div class="col-span-1 font-semibold">INC-{{ str_pad($incidencia->id, 3, '0', STR_PAD_LEFT) }}</div>
+            
             <div class="col-span-4">
                 <div class="font-medium">{{ $incidencia->titulo }}</div>
                 <div class="text-xs text-gray-500">{{ Str::limit($incidencia->descripcion, 50) }}</div>
@@ -46,6 +47,7 @@
         @endforelse
 
     </div>
+    
     <div class="px-6 py-4 border-t-2 border-black bg-cream-dark">
         <a href="{{ route('dashboard') }}" class="text-sm underline">← Volver al Dashboard</a>
     </div>
