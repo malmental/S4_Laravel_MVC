@@ -74,7 +74,7 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
 </script>
 
 <!-- Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
     <a href="{{ $filterUrls['critical'] }}" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark">
         <div class="text-xs uppercase tracking-wide mb-3">Critical</div>
         <div class="text-5xl font-light mb-2">{{ str_pad($altaPrioridad ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
