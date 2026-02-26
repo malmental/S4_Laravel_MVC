@@ -208,9 +208,9 @@ document.getElementById('incidenciaModal').addEventListener('click', function(e)
             name="tag"
             placeholder="Buscar por hashtag..."
             value="{{ request('tag') }}"
-            class="border-2 border-black p-2 text-xs flex-1">
-                <button class="px-16 py-2 border-2 border-black bg-black text-white text-xs uppercase">
-                    Search
+            class="border-2 border-black p-2 text-sm flex-1">
+                <button class="px-16 py-2 border-2 border-black bg-black text-white text-sm uppercase">
+                    Buscar
                 </button>
         </form>
     </div>
