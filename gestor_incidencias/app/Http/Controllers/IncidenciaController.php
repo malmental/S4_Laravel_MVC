@@ -15,7 +15,7 @@ class IncidenciaController extends Controller
             abort(403, "No estás logueado");
         }
         
-        $incidencias = $user->incidencias()->orderBy('created_at', 'desc')->get();
+        $incidencias = $user->incidencias()->orderBy('created_at', 'desc')->paginate(10);
         
         return view('incidencias.index', compact('incidencias'));
     }
@@ -147,7 +147,7 @@ class IncidenciaController extends Controller
                 });
             }       
     
-        $incidencias = $query->orderBy('created_at', 'desc')->get();
+        $incidencias = $query->orderBy('created_at', 'desc')->paginate(10);
     
         $altaPrioridad = Incidencia::where('prioridad', 'alta')->count();
         $abiertas = Incidencia::where('estado', 'abierta')->count();
