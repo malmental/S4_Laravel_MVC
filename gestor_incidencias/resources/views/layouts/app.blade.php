@@ -36,7 +36,7 @@
             <div class="px-6 py-4 flex items-center justify-between border-b-2 border-black">
                 <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
                 <div class="text-right text-xs">
-                    <div>v2.1 | {{ date('Y.m.d H:i') }}</div>
+                    <div id="headerTime">v2.1 | --</div>
                 </div>
             </div>
             
@@ -46,22 +46,50 @@
                 <span class="font-semibold">SYSTEM ONLINE</span>
             </div>
 
+            <!-- En el layout, línea 49-58, reemplazar el div de botones -->
             <div class="flex items-center gap-4">
                 <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
-                <form method="POST" action="{{ route('profile.destroy') }}" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar tu usuario? Esta acción es irreversible.')">
+                    <a href="{{ route('incidencias.index') }}" class="px-4 py-1 border border-black     bg-black text-white text-xs uppercase hover:bg-gray-800">
+                    My Incidents
+                    </a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-3 py-1 border border-red-600 bg-red-600 text-white text-xs uppercase hover:bg-red-700 ml-2">
-                        Destruir Usuario
+                    <button type="submit" class="px-8 py-1 border border-black bg-white text-xs uppercase hover:bg-gray-200">
+                    Logout
                     </button>
                 </form>
-                <span>LAST SYNC: 2 MIN AGO</span>
+                
+                <form method="POST" action="{{ route('profile.destroy') }}" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar tu usuario?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-3 py-1 border border-red-600 bg-red-600 text-white text-xs uppercase hover:bg-red-700">
+                    Destroy User
+                    </button>
+                </form>
             </div>
-
         </div>
+    
     </div>
         <!-- Main Layout -->
         @yield('content')
     </div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        const formatted = now.getFullYear() + '.' + 
+                        String(now.getMonth() + 1).padStart(2, '0') + '.' + 
+                        String(now.getDate()).padStart(2, '0') + ' ' +
+                        String(now.getHours()).padStart(2, '0') + ':' +
+                        String(now.getMinutes()).padStart(2, '0');
+        const timeEl = document.getElementById('headerTime');
+        if (timeEl) {
+            timeEl.textContent = 'v2.1 | ' + formatted;
+        }
+    }
+    setInterval(updateTime, 60000);
+    updateTime();
+</script>
+
 </body>
 </html>
