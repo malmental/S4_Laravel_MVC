@@ -11,8 +11,9 @@ class DatabaseSeeder extends Seeder
         // Solo llamas al otro seeder aquí
         $this->call([
             UserSeeder::class,
-            // IncidenciaSeeder::class,
-            // CommentSeeder::class,
+            IncidenciaSeeder::class,
+            TagSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

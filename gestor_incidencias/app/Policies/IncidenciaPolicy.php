@@ -13,7 +13,7 @@ class IncidenciaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->id === $incidencia->user_id;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class IncidenciaPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class IncidenciaPolicy
      */
     public function update(User $user, Incidencia $incidencia): bool
     {
-        return false;
+        return $user->id === $incidencia->user_id;
     }
 
     /**

@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Nueva Incidencia')
 @section('content')
+
 <div class="border-3 border-black bg-white max-w-2xl mx-auto">
     <div class="px-6 py-4 border-b-2 border-black bg-cream-dark">
         <h2 class="text-lg font-semibold uppercase tracking-wide">Nueva Incidencia</h2>
     </div>
+
     <form action="{{ route('incidencias.store') }}" method="POST" class="p-6 space-y-4">
         @csrf
 
