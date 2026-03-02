@@ -29,7 +29,7 @@
 
 </head>
 <body class="bg-cream min-h-screen">
-    <div class="max-w-7xl mx-auto p-6">
+    <div class="min-w-[720px] max-w-7xl mx-auto p-6 overflow-x-auto">
         
         <!-- Header -->
         <div class="border-3 border-black bg-white mb-6">
@@ -47,14 +47,14 @@
             </div>
 
             <!-- En el layout, línea 49-58, reemplazar el div de botones -->
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
                 <span>USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
-                    <a href="{{ route('incidencias.index') }}" class="px-4 py-1 border border-black     bg-black text-white text-xs uppercase hover:bg-gray-800">
+                    <a href="{{ route('incidencias.index') }}" class="px-3 py-1 border border-black bg-black text-white text-xs uppercase hover:bg-gray-800">
                     My Incidents
                     </a>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="px-8 py-1 border border-black bg-white text-xs uppercase hover:bg-gray-200">
+                    <button type="submit" class="px-3 py-1 border border-black bg-white text-xs uppercase hover:bg-gray-200">
                     Logout
                     </button>
                 </form>
@@ -62,7 +62,7 @@
                 <form method="POST" action="{{ route('profile.destroy') }}" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar tu usuario?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="px-3 py-1 border border-red-600 bg-red-600 text-white text-xs uppercase hover:bg-red-700">
+                    <button type="submit" class="px-2 py-1 border border-red-600 bg-red-600 text-white text-xs uppercase hover:bg-red-700">
                     Destroy User
                     </button>
                 </form>

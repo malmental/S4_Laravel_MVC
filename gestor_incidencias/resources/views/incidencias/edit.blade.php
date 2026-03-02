@@ -23,7 +23,7 @@
         <div class="mb-6">
             <label class="block text-xs uppercase mb-2">Tags</label>
             <input 
-            type="text" name="tags" value="{{ $incidencia->tags->pluck('nombre')->implode(', ') }}" class="w-full border-2 border-black px-4 py-2 text-sm">
+            type="text" name="tags" value="{{ $incidencia->tags->pluck('nombre')->implode(' ') }}" class="w-full border-2 border-black px-4 py-2 text-sm">
             <p class="text-xs mt-2 text-gray-500">
                 Separate tags with spaces
             </p>
