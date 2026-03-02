@@ -3,13 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CommentStoreRequest extends FormRequest
 {
 
 public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     public function rules(): array
