@@ -9,6 +9,7 @@ use App\Http\Controllers\Traits\HasTags;
 use App\Http\Requests\IncidenciaStoreRequest;
 use App\Http\Requests\IncidenciaUpdateRequest;
 use App\Services\IncidenciaService;
+use Illuminate\Support\Facades\DB;
 
 class IncidenciaController extends Controller
 {
@@ -34,15 +35,19 @@ class IncidenciaController extends Controller
     
     public function store(IncidenciaStoreRequest $request)
     {
-        $incidencia = Incidencia::create([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'prioridad' => $request->prioridad,
-            'estado' => $request->estado,
-            'user_id' => Auth::id(),
-        ]);
+        $incidencia = DB::transaction(function () use ($request) {
+            $incidencia = Incidencia::create([
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+                'prioridad' => $request->prioridad,
+                'estado' => $request->estado,
+                'user_id' => Auth::id(),
+            ]);
+        
+            $this->syncTags($incidencia, $request->tags);
+            return $incidencia;
+        });
 
-        $this->syncTags($incidencia, $request->tags);
         return redirect()->route('incidencias.index');
     }
     
@@ -65,9 +70,11 @@ class IncidenciaController extends Controller
     public function update(IncidenciaUpdateRequest $request, Incidencia $incidencia)
     {
         $this->authorize('update', $incidencia);
-
-        $incidencia->update($request->validated());
-        $this->syncTags($incidencia, $request->tags);
+        
+        DB::transaction(function () use ($request, $incidencia) {
+            $incidencia->update($request->validated());
+            $this->syncTags($incidencia, $request->tags);
+        }); 
         
         return redirect()
             ->route('incidencias.index')
