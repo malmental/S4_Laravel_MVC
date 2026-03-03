@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Incidencia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class IncidenciaService
 {
@@ -17,7 +16,7 @@ class IncidenciaService
         $incidencias = $query->orderBy('created_at', 'desc')->paginate(10);
 
         // 3. Calcular estadísticas
-        $estadisticas = $this->getEstadisticas();
+        $estadisticas = $this->getEstadisticas($request);
 
         // 4. Construir URLs de filtros
         $filterUrls = $this->buildFilterUrls($request);
@@ -36,20 +35,17 @@ class IncidenciaService
 
     private function buildFilteredQuery(Request $request)
     {
-        $userId = Auth::id();
-
         $query = Incidencia::query()
-            ->where('user_id', $userId)
             ->with(['user', 'tags', 'comments.user', 'comments.replies', 'comments.replies.user']);
 
         $prioridades = $request->input('prioridad', []);
         $estados = $request->input('estado', []);
 
-        if (!empty($prioridades)) {
+        if (! empty($prioridades)) {
             $query->whereIn('prioridad', $prioridades);
         }
 
-        if (!empty($estados)) {
+        if (! empty($estados)) {
             $query->whereIn('estado', $estados);
         }
 
@@ -64,18 +60,13 @@ class IncidenciaService
 
     private function getEstadisticas(Request $request): array
     {
-        $userId = Auth::id();
-
         $porEstado = Incidencia::select('estado')
-            ->where('user_id', $userId)
             ->selectRaw('COUNT(*) as total')
             ->groupBy('estado')
             ->pluck('total', 'estado')
             ->toArray();
 
-        $altaPrioridad = Incidencia::where('user_id', $userId)
-            ->where('prioridad', 'alta')
-            ->count();
+        $altaPrioridad = Incidencia::where('prioridad', 'alta')->count();
 
         return [
             'abierta' => $porEstado['abierta'] ?? 0,
@@ -103,14 +94,14 @@ class IncidenciaService
         $arr = $currentFilters;
 
         if (in_array($value, $arr)) {
-            $arr = array_filter($arr, fn($v) => $v !== $value);
+            $arr = array_filter($arr, fn ($v) => $v !== $value);
         } else {
             $arr[] = $value;
         }
 
         $params = request()->except($type);
-        
-        if (!empty($arr)) {
+
+        if (! empty($arr)) {
             $params[$type] = $arr;
         }
 
