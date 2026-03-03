@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Traits;
+
 use App\Models\Tag;
 
 trait HasTags
