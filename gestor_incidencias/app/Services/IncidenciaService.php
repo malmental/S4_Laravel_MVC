@@ -13,7 +13,7 @@ class IncidenciaService
         $query = $this->buildFilteredQuery($request);
 
         // 2. Obtener incidencias paginadas
-        $incidencias = $query->orderBy('created_at', 'desc')->paginate(10);
+        $incidencias = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         // 3. Calcular estadísticas
         $estadisticas = $this->getEstadisticas($request);
@@ -99,7 +99,10 @@ class IncidenciaService
             $arr[] = $value;
         }
 
-        $params = request()->except($type);
+        // Al alternar filtros, nunca se debe arrastrar la página actual:
+        // si estamos en page=2 y el nuevo filtro solo tiene resultados en page=1,
+        // debemos reiniciar automáticamente a la primera página.
+        $params = request()->except([$type, 'page']);
 
         if (! empty($arr)) {
             $params[$type] = $arr;
