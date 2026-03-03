@@ -53,7 +53,7 @@ class IncidenciaController extends Controller
 
     public function show(Incidencia $incidencia)
     {
-        $this->authorize('update', $incidencia);
+        $this->authorize('view', $incidencia);
 
         return view('incidencias.show', compact('incidencia'));
     }
@@ -98,24 +98,5 @@ class IncidenciaController extends Controller
         $data = $service->getMetricas($request);
 
         return view('dashboard', $data);
-    }
-
-    private function buildFilterUrl($type, $value, $currentFilters)
-    {
-        $arr = $currentFilters;
-
-        if (in_array($value, $arr)) {
-            $arr = array_filter($arr, fn($v) => $v !== $value);
-        } else {
-            $arr[] = $value;
-        }
-
-        $params = request()->except($type);
-        
-        if (!empty($arr)) {
-            $params[$type] = $arr;
-        }
-
-        return route('dashboard', $params);
     }
 }

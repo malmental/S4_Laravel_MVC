@@ -23,7 +23,7 @@ class CommentTest extends TestCase
         $this->incidencia = Incidencia::factory()->create();
     }
 
-    public function usuario_puede_crear_comentario()
+    public function test_usuario_puede_crear_comentario()
     {
         $response = $this->actingAs($this->user)
             ->post('/comments', [
@@ -37,7 +37,7 @@ class CommentTest extends TestCase
         ]);
     }
 
-    public function contenido_es_required()
+    public function test_contenido_es_required()
     {
         $response = $this->actingAs($this->user)
             ->post('/comments', [
@@ -47,7 +47,7 @@ class CommentTest extends TestCase
         $response->assertSessionHasErrors('contenido');
     }
 
-    public function usuario_puede_responder_comentario()
+    public function test_usuario_puede_responder_comentario()
     {
         $comentarioPadre = Comment::factory()->create([
             'incidencia_id' => $this->incidencia->id,
@@ -66,7 +66,7 @@ class CommentTest extends TestCase
         ]);
     }
 
-    public function usuario_puede_eliminar_su_comentario()
+    public function test_usuario_puede_eliminar_su_comentario()
     {
         $comentario = Comment::factory()->create([
             'user_id' => $this->user->id,
