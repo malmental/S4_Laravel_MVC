@@ -1,12 +1,18 @@
 @extends('layouts.app')
-@section('title', 'Ver Incidencia')
+@section('title', 'Detalle Incidencia')
+
 @section('content')
-<div class="border-3 border-black bg-white max-w-2xl mx-auto">
+{{-- Contenedor de detalle de una incidencia --}}
+<div x-data="incidenciaShow()" class="motion-fade-in bg-white max-w-3xl mx-auto">
+    
+    {{-- Cabecera del detalle con ID formateado --}}
     <div class="px-6 py-4 border-b-2 border-black bg-cream-dark flex justify-between items-center">
         <h2 class="text-lg font-semibold uppercase tracking-wide">Detalle de Incidencia</h2>
         <span class="text-xs font-mono">INC-{{ str_pad($incidencia->id, 3, '0', STR_PAD_LEFT) }}</span>
     </div>
-    <div class="p-6 space-y-4">
+
+    {{-- Cuerpo informativo: campos, etiquetas y metadatos --}}
+    <div class="p-6 space-y-5">
         <div>
             <label class="block text-xs uppercase text-gray-500 mb-1">Título</label>
             <div class="text-lg font-medium">{{ $incidencia->titulo }}</div>
@@ -14,17 +20,30 @@
 
         <div>
             <label class="block text-xs uppercase text-gray-500 mb-1">Descripción</label>
-            <div class="p-4 bg-cream border border-gray-300">{{ $incidencia->descripcion }}</div>
+            <div class="p-4 border border-gray-300 bg-cream">{{ $incidencia->descripcion }}</div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="block text-xs uppercase text-gray-500 mb-1">Tags</label>
+            <div class="flex flex-wrap gap-1">
+                @forelse($incidencia->tags as $tag)
+                    <span class="px-2 py-1 text-xs bg-gray-300/50 text-gray-700 rounded">#{{ $tag->nombre }}</span>
+                @empty
+                    <span class="text-xs text-gray-400">—</span>
+                @endforelse
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs uppercase text-gray-500 mb-1">Estado</label>
                 <span class="px-3 py-1 border-2 border-black bg-white text-xs uppercase">{{ $incidencia->estado }}</span>
             </div>
             <div>
                 <label class="block text-xs uppercase text-gray-500 mb-1">Prioridad</label>
-                <span class="px-3 py-1 border-2 border-black {{ $incidencia->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }} text-xs uppercase">{{ $incidencia->prioridad }}</span>
+                <span class="px-3 py-1 border-2 border-black text-xs uppercase {{ $incidencia->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }}">
+                    {{ $incidencia->prioridad }}
+                </span>
             </div>
         </div>
 
@@ -32,11 +51,72 @@
             <label class="block text-xs uppercase text-gray-500 mb-1">Creada</label>
             <div class="text-sm">{{ $incidencia->created_at->format('Y-m-d H:i') }}</div>
         </div>
-        
     </div>
-    <div class="px-6 py-4 border-t-2 border-black bg-cream-dark flex gap-4">
-        <a href="{{ route('incidencias.edit', $incidencia->id) }}" class="px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase hover:bg-gray-800">Editar</a>
-        <a href="{{ route('incidencias.index') }}" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase hover:bg-cream-dark">← Volver</a>
+
+    {{-- Barra de acciones: editar, volver y eliminar --}}
+    <div class="px-6 py-4 border-t-2 border-black bg-cream-dark flex flex-wrap items-center gap-2">
+        <a href="{{ route('incidencias.edit', $incidencia->id) }}" class="px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">
+            Editar
+        </a>
+        <a href="{{ route('incidencias.index') }}" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
+            Volver
+        </a>
+        <button type="button" @click="openDeleteModal()" class="px-4 py-2 border-2 border-red-700 bg-red-700 text-white text-xs uppercase interactive-btn ml-auto">
+            Eliminar
+        </button>
+    </div>
+
+    {{-- Modal de confirmación para eliminación --}}
+    <div
+        x-cloak
+        x-show="deleteOpen"
+        x-transition.opacity.duration.180ms
+        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+        @click.self="closeDeleteModal()"
+        @keydown.escape.window="closeDeleteModal()"
+    >
+        <div
+            x-show="deleteOpen"
+            x-transition:enter="transition ease-out duration-220"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+            class="w-full max-w-md bg-white"
+        >
+            <div class="px-5 py-4 border-b-2 border-black bg-cream-dark">
+                <h3 class="text-sm font-semibold uppercase">Confirmar eliminación</h3>
+            </div>
+            <div class="p-5 text-sm">
+                <p>Vas a eliminar esta incidencia. Esta acción no se puede deshacer.</p>
+                <div class="mt-5 flex gap-2 justify-end">
+                    <button type="button" @click="closeDeleteModal()" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
+                        Cancelar
+                    </button>
+                    <form action="{{ route('incidencias.destroy', $incidencia->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 border-2 border-red-700 bg-red-700 text-white text-xs uppercase interactive-btn">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+{{-- Lógica Alpine para el modal de eliminación --}}
+function incidenciaShow() {
+    return {
+        deleteOpen: false,
+        openDeleteModal() { this.deleteOpen = true; },
+        closeDeleteModal() { this.deleteOpen = false; }
+    }
+}
+</script>
+@endpush
