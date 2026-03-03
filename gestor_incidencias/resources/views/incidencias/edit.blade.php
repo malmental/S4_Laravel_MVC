@@ -1,57 +1,79 @@
 @extends('layouts.app')
 @section('title', 'Editar Incidencia')
+
 @section('content')
-<div class="border-3 border-black bg-white max-w-2xl mx-auto">
+{{-- Tarjeta principal de edición de incidencia --}}
+<div class="bg-white max-w-3xl mx-auto">
+    
+    {{-- Cabecera del formulario --}}
     <div class="px-6 py-4 border-b-2 border-black bg-cream-dark">
         <h2 class="text-lg font-semibold uppercase tracking-wide">Editar Incidencia</h2>
     </div>
-    <form action="{{ route('incidencias.update', $incidencia->id) }}" method="POST" class="p-6 space-y-4">
-        @csrf @method('PUT')
-        
+
+    {{-- Formulario de actualización (PUT) --}}
+    <form action="{{ route('incidencias.update', $incidencia->id) }}" method="POST" class="p-6 space-y-5">
+        @csrf
+        @method('PUT')
+
+        {{-- Campo: título --}}
         <div>
-            <label class="block text-xs uppercase mb-1">Título</label>
-            <input type="text" name="titulo" value="{{ old('titulo', $incidencia->titulo) }}" required class="w-full px-4 py-2 border-2 border-black bg-cream focus:bg-white focus:outline-none">
-            @error('titulo') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            <label class="block text-xs uppercase mb-2">Título</label>
+            <input type="text" name="titulo" value="{{ old('titulo', $incidencia->titulo) }}" required class="w-full px-4 py-2 border-2 border-black bg-cream-dark focus:outline-none">
+            @error('titulo') <p class="text-red-700 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Campo: descripción --}}
         <div>
-            <label class="block text-xs uppercase mb-1">Descripción</label>
-            <textarea name="descripcion" required rows="4" class="w-full px-4 py-2 border-2 border-black bg-cream focus:bg-white focus:outline-none">{{ old('descripcion', $incidencia->descripcion) }}</textarea>
-            @error('descripcion') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            <label class="block text-xs uppercase mb-2">Descripción</label>
+            <textarea name="descripcion" rows="5" required class="w-full px-4 py-2 border-2 border-black bg-cream-dark focus:outline-none">{{ old('descripcion', $incidencia->descripcion) }}</textarea>
+            @error('descripcion') <p class="text-red-700 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="mb-6">
+        {{-- Campo: tags (separados por espacios) --}}
+        <div>
             <label class="block text-xs uppercase mb-2">Tags</label>
-            <input 
-            type="text" name="tags" value="{{ $incidencia->tags->pluck('nombre')->implode(' ') }}" class="w-full border-2 border-black px-4 py-2 text-sm">
-            <p class="text-xs mt-2 text-gray-500">
-                Separate tags with spaces
-            </p>
+            <input
+                type="text"
+                name="tags"
+                value="{{ old('tags', $incidencia->tags->pluck('nombre')->implode(' ')) }}"
+                placeholder="backend urgente bug"
+                class="w-full px-4 py-2 border-2 border-black bg-cream-dark focus:outline-none"
+            >
+            <p class="text-xs text-gray-500 mt-1">Separa con espacios.</p>
+            @error('tags') <p class="text-red-700 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        {{-- Campos agrupados: estado y prioridad --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-xs uppercase mb-1">Estado</label>
-                <select name="estado" class="w-full px-4 py-2 border-2 border-black bg-cream focus:outline-none">
-                    <option value="abierta" {{ old('estado', $incidencia->estado)=='abierta' ? 'selected' : '' }}>Abierta</option>
-                    <option value="en_proceso" {{ old('estado', $incidencia->estado)=='en_proceso' ? 'selected' : '' }}>En proceso</option>
-                    <option value="cerrada" {{ old('estado', $incidencia->estado)=='cerrada' ? 'selected' : '' }}>Cerrada</option>
+                <label class="block text-xs uppercase mb-2">Estado</label>
+                <select name="estado" class="w-full px-4 py-2 border-2 border-black bg-cream-dark focus:outline-none">
+                    <option value="abierta" {{ old('estado', $incidencia->estado) === 'abierta' ? 'selected' : '' }}>Abierta</option>
+                    <option value="en_proceso" {{ old('estado', $incidencia->estado) === 'en_proceso' ? 'selected' : '' }}>En proceso</option>
+                    <option value="cerrada" {{ old('estado', $incidencia->estado) === 'cerrada' ? 'selected' : '' }}>Cerrada</option>
                 </select>
+                @error('estado') <p class="text-red-700 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label class="block text-xs uppercase mb-1">Prioridad</label>
-                <select name="prioridad" class="w-full px-4 py-2 border-2 border-black bg-cream focus:outline-none">
-                    <option value="baja" {{ old('prioridad', $incidencia->prioridad)=='baja' ? 'selected' : '' }}>Baja</option>
-                    <option value="media" {{ old('prioridad', $incidencia->prioridad)=='media' ? 'selected' : '' }}>Media</option>
-                    <option value="alta" {{ old('prioridad', $incidencia->prioridad)=='alta' ? 'selected' : '' }}>Alta</option>
+                <label class="block text-xs uppercase mb-2">Prioridad</label>
+                <select name="prioridad" class="w-full px-4 py-2 border-2 border-black bg-cream-dark focus:outline-none">
+                    <option value="baja" {{ old('prioridad', $incidencia->prioridad) === 'baja' ? 'selected' : '' }}>Baja</option>
+                    <option value="media" {{ old('prioridad', $incidencia->prioridad) === 'media' ? 'selected' : '' }}>Media</option>
+                    <option value="alta" {{ old('prioridad', $incidencia->prioridad) === 'alta' ? 'selected' : '' }}>Alta</option>
                 </select>
+                @error('prioridad') <p class="text-red-700 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
 
-        <div class="flex gap-4 pt-4">
-            <button type="submit" class="px-6 py-2 border-2 border-black bg-black text-white text-xs uppercase hover:bg-gray-800">Actualizar</button>
-            <a href="{{ route('incidencias.index') }}" class="px-6 py-2 border-2 border-black bg-white text-xs uppercase hover:bg-cream-dark">Cancelar</a>
+        {{-- Acciones finales: guardar o volver --}}
+        <div class="pt-2 flex gap-2">
+            <button type="submit" class="px-5 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">
+                Actualizar incidencia
+            </button>
+            <a href="{{ route('incidencias.index') }}" onclick="sessionStorage.setItem('softNav','1')" class="px-5 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
