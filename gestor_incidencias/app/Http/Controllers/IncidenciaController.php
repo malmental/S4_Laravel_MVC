@@ -18,21 +18,21 @@ class IncidenciaController extends Controller
     public function index()
     {
         $user = Auth::user(); 
-        
+
         if (!$user) {
             abort(403, "No estás logueado");
         }
-        
+
         $incidencias = $user->incidencias()->orderBy('created_at', 'desc')->paginate(10);
-        
+
         return view('incidencias.index', compact('incidencias'));
     }
-    
+
     public function create()
     {
         return view('incidencias.create');
     }
-    
+
     public function store(IncidenciaStoreRequest $request)
     {
         $incidencia = DB::transaction(function () use ($request) {
@@ -43,21 +43,21 @@ class IncidenciaController extends Controller
                 'estado' => $request->estado,
                 'user_id' => Auth::id(),
             ]);
-        
+
             $this->syncTags($incidencia, $request->tags);
             return $incidencia;
         });
 
         return redirect()->route('incidencias.index');
     }
-    
+
     public function show(Incidencia $incidencia)
     {
         $this->authorize('update', $incidencia);
-        
+
         return view('incidencias.show', compact('incidencia'));
     }
-    
+
     public function edit(Incidencia $incidencia)
     {
         $this->authorize('update', $incidencia);
@@ -66,16 +66,16 @@ class IncidenciaController extends Controller
 
         return view('incidencias.edit', compact('incidencia'));
     }
-    
+
     public function update(IncidenciaUpdateRequest $request, Incidencia $incidencia)
     {
         $this->authorize('update', $incidencia);
-        
+
         DB::transaction(function () use ($request, $incidencia) {
             $incidencia->update($request->validated());
             $this->syncTags($incidencia, $request->tags);
         }); 
-        
+
         return redirect()
             ->route('incidencias.index')
             ->with('success', 'Incidencia actualizada correctamente');
@@ -92,6 +92,8 @@ class IncidenciaController extends Controller
 
     public function metricas(Request $request)
     {
+        $this->authorize('viewAny', Incidencia::class);
+
         $service = new IncidenciaService();
         $data = $service->getMetricas($request);
 

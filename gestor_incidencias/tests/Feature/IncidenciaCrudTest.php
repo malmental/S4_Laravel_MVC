@@ -21,7 +21,7 @@ class IncidenciaCrudTest extends TestCase
         $this->otroUsuario = User::factory()->create();
     }
 
-    public function usuario_puede_crear_incidencia()
+    public function test_usuario_puede_crear_incidencia()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -39,7 +39,7 @@ class IncidenciaCrudTest extends TestCase
         $response->assertRedirect('/incidencias');
     }
 
-    public function usuario_puede_ver_sus_incidencias()
+    public function test_usuario_puede_ver_sus_incidencias()
     {
         Incidencia::factory()->create(['user_id' => $this->user->id]);
 
@@ -48,7 +48,7 @@ class IncidenciaCrudTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function usuario_puede_editar_su_incidencia()
+    public function test_usuario_puede_editar_su_incidencia()
     {
         $incidencia = Incidencia::factory()->create(['user_id' => $this->user->id]);
 
@@ -66,7 +66,7 @@ class IncidenciaCrudTest extends TestCase
         ]);
     }
 
-    public function usuario_puede_eliminar_su_incidencia()
+    public function test_usuario_puede_eliminar_su_incidencia()
     {
         $incidencia = Incidencia::factory()->create(['user_id' => $this->user->id]);
 
@@ -78,17 +78,17 @@ class IncidenciaCrudTest extends TestCase
         ]);
     }
 
-    public function usuario_no_puede_editar_incidencia_ajena()
+    public function test_usuario_no_puede_editar_incidencia_ajena()
     {
         $incidencia = Incidencia::factory()->create(['user_id' => $this->otroUsuario->id]);
         
         $response = $this->actingAs($this->user)
             ->get("/incidencias/{$incidencia->id}/edit");
-        
+
         $response->assertStatus(403);
     }
 
-    public function usuario_no_puede_eliminar_incidencia_ajena()
+    public function test_usuario_no_puede_eliminar_incidencia_ajena()
     {
         $incidencia = Incidencia::factory()->create(['user_id' => $this->otroUsuario->id]);
 
@@ -98,7 +98,7 @@ class IncidenciaCrudTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function usuario_no_logueado_no_puede_acceder()
+    public function test_usuario_no_logueado_no_puede_acceder()
     {
         $response = $this->get('/incidencias');
 
