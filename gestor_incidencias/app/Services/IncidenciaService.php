@@ -4,12 +4,10 @@ namespace App\Services;
 
 use App\Models\Incidencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IncidenciaService
 {
-    /**
-     * Obtener metricas con estadisticas
-     */
     public function getMetricas(Request $request): array
     {
         // 1. Construir query con filtros
@@ -36,15 +34,15 @@ class IncidenciaService
         ];
     }
 
-     /**
-     * Construir query con filtros (SCOPES)
-     */
     private function buildFilteredQuery(Request $request)
     {
+        $userId = Auth::id();
+
         $query = Incidencia::query()
+            ->where('user_id', $userId)
             ->with(['user', 'tags', 'comments.user', 'comments.replies', 'comments.replies.user']);
 
-            $prioridades = $request->input('prioridad', []);
+        $prioridades = $request->input('prioridad', []);
         $estados = $request->input('estado', []);
 
         if (!empty($prioridades)) {
@@ -64,18 +62,21 @@ class IncidenciaService
         return $query;
     }
 
-    /**
-     * Obtener estadísticas globales
-     */
-    private function getEstadisticas(): array
+    private function getEstadisticas(Request $request): array
     {
+        $userId = Auth::id();
+
         $porEstado = Incidencia::select('estado')
+            ->where('user_id', $userId)
             ->selectRaw('COUNT(*) as total')
             ->groupBy('estado')
             ->pluck('total', 'estado')
             ->toArray();
 
-            $altaPrioridad = Incidencia::alta()->count();
+        $altaPrioridad = Incidencia::where('user_id', $userId)
+            ->where('prioridad', 'alta')
+            ->count();
+
         return [
             'abierta' => $porEstado['abierta'] ?? 0,
             'en_proceso' => $porEstado['en_proceso'] ?? 0,
@@ -84,9 +85,6 @@ class IncidenciaService
         ];
     }
 
-    /**
-     * Construir URLs para filtros
-     */
     private function buildFilterUrls(Request $request): array
     {
         $prioridades = $request->input('prioridad', []);
@@ -100,13 +98,10 @@ class IncidenciaService
         ];
     }
 
-    /**
-     * Construir URL para un filtro específico
-     */
     private function buildFilterUrl(string $type, string $value, array $currentFilters): string
     {
         $arr = $currentFilters;
-        
+
         if (in_array($value, $arr)) {
             $arr = array_filter($arr, fn($v) => $v !== $value);
         } else {
