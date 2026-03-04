@@ -12,9 +12,11 @@
         <div class="px-6 py-4 border-b-2 border-black bg-cream-dark flex justify-between items-center">
             <h2 class="text-lg font-semibold uppercase tracking-wide">Mis Incidencias</h2>
             <div class="flex gap-2">
-                <a href="{{ route('dashboard') }}" onclick="sessionStorage.setItem('softNav','1')" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
-                    ← Dashboard
+                {{--
+                <a href="{{ route('dashboard') }}" data-soft-nav="1" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
+                    Dashboard
                 </a>
+                --}}
                 <button type="button" @click="openCreateModal()" class="px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">
                     + Nueva Incidencia
                 </button>
@@ -165,9 +167,9 @@
                 {{-- Acciones del modal Ver --}}
                 <div class="px-6 py-4 border-t-2 border-black bg-cream-dark flex justify-end gap-2">
                     <template x-if="viewData?.id">
-                        <button type="button" @click="openEditFromView()" class="px-3 py-1 border border-black bg-white text-xs uppercase interactive-btn">Editar</button>
+                        <button type="button" @click="openEditFromView()" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">Editar</button>
                     </template>
-                    <button type="button" @click="closeViewModal()" class="px-3 py-1 border border-black bg-black text-white text-xs uppercase interactive-btn">Cerrar</button>
+                    <button type="button" @click="closeViewModal()" class="px-4 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">Cerrar</button>
                 </div>
             </div>
         </div>

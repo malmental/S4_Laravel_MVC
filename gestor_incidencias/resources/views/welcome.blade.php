@@ -93,9 +93,9 @@
                         <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
                         </svg>
                         
-                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
+                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </div>
-                <p class="text-sm text-gray-custom text-center mt-2">Sistema de Gestión de Incidencias v2.1</p>
+                <p class="text-sm text-gray-custom text-center mt-2">Incident Managment</p>
             </div>
 
             {{-- Cuerpo principal con ramas para usuario autenticado/invitado --}}
@@ -118,13 +118,13 @@
                     <div class="space-y-4">
                         <a 
                             href="{{ route('incidencias.index') }}"
-                            onclick="sessionStorage.setItem('softNav','1')"
+                            data-soft-nav="1"
                             class="block w-full px-6 py-4 border-2 border-black bg-black text-white font-semibold uppercase tracking-wide text-sm text-center hover:bg-gray-800 transition-colors"
                         >
                             Ver Incidencias
                         </a>
 
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form action="{{ route('logout') }}" method="POST" data-soft-nav="1">
                             @csrf
                             <button 
                                 type="submit"
@@ -171,7 +171,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <a 
                             href="{{ route('login') }}"
-                            onclick="sessionStorage.setItem('softNav','1')"
+                            data-soft-nav="1"
                             class="px-6 py-4 border-2 border-black bg-black text-white font-semibold uppercase tracking-wide text-sm text-center hover:bg-gray-800 transition-colors"
                         >
                             Iniciar Sesión
@@ -179,7 +179,7 @@
 
                         <a 
                             href="{{ route('register') }}"
-                            onclick="sessionStorage.setItem('softNav','1')"
+                            data-soft-nav="1"
                             class="px-6 py-4 border-2 border-black bg-cream-dark font-semibold uppercase tracking-wide text-sm text-center hover:bg-gray-custom hover:text-white transition-colors"
                         >
                             Registrarse
@@ -202,5 +202,27 @@
             <p>Sistema desarrollado para la gestión eficiente de incidencias</p>
         </div>
     </div>
+    <script>
+        function enableSoftNav(trigger) {
+            if (!trigger) {
+                return;
+            }
+            sessionStorage.setItem('softNav', '1');
+        }
+
+        document.addEventListener('click', (event) => {
+            const trigger = event.target.closest('[data-soft-nav="1"]');
+            if (trigger) {
+                enableSoftNav(trigger);
+            }
+        });
+
+        document.addEventListener('submit', (event) => {
+            const trigger = event.target.closest('form[data-soft-nav="1"]');
+            if (trigger) {
+                enableSoftNav(trigger);
+            }
+        });
+    </script>
 </body>
 </html>

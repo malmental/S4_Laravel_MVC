@@ -41,6 +41,33 @@
     .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-black/70 focus:ring-offset-2;
     }
+
+    /* Render tipografico del tablero ASCII dentro del modal. */
+    .ascii-snake-board {
+    margin: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: calc((var(--snake-side) - (2 * var(--snake-gap))) / var(--snake-grid));
+    line-height: 1;
+    letter-spacing: 0.34em;
+    white-space: pre;
+    user-select: none;
+    }
+
+    /* Marco cuadrado contenedor del tablero (area visible del juego). */
+    .ascii-snake-frame {
+    --snake-side: min(34rem, 82vw);
+    --snake-grid: 32;
+    --snake-gap: calc(var(--snake-side) / var(--snake-grid));
+    width: var(--snake-side);
+    height: var(--snake-side);
+    box-sizing: border-box;
+    padding: var(--snake-gap);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+    }
 }
 
 [x-cloak] {
