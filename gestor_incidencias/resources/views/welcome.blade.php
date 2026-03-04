@@ -95,7 +95,7 @@
                         
                     <h1 class="text-3xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </div>
-                <p class="text-sm text-gray-custom text-center mt-2">Incident Managment</p>
+                <p class="text-sm text-gray-custom text-center mt-3">An Incident Manager</p>
             </div>
 
             {{-- Cuerpo principal con ramas para usuario autenticado/invitado --}}
