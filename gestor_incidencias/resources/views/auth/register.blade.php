@@ -92,7 +92,7 @@
                     <h1 class="text-3xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </a>
             </div>
-            <p class="text-sm text-gray-custom mt-1">Incident Managment</p>
+            <p class="text-sm text-gray-custom mt-3">An Incident Manager</p>
         </div>
 
         {{-- Tarjeta principal de registro --}}
