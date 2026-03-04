@@ -93,7 +93,7 @@
                         <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
                         </svg>
                         
-                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
+                    <h1 class="text-3xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </div>
                 <p class="text-sm text-gray-custom text-center mt-2">Incident Managment</p>
             </div>

@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\IncidenciaController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,7 +11,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [IncidenciaController::class, 'metricas'])->name('dashboard');
-    Route::get('/metricas', [DashboardController::class, 'metricas'])->name('metricas');
+    Route::redirect('/metricas', '/dashboard')->name('metricas');
     Route::resource('incidencias', IncidenciaController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
