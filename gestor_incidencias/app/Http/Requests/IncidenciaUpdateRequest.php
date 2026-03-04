@@ -11,7 +11,7 @@ class IncidenciaUpdateRequest extends FormRequest
     {
         return Auth::check();
     }
-    
+
     public function rules(): array
     {
         return [
@@ -20,6 +20,7 @@ class IncidenciaUpdateRequest extends FormRequest
             'estado' => 'required|in:abierta,en_proceso,cerrada',
             'prioridad' => 'required|in:baja,media,alta',
             'tags' => 'nullable|string',
+            'tags.*' => 'string|max:50',
         ];
     }
 }

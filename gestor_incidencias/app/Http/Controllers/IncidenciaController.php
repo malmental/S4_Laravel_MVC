@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Incidencia;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\HasTags;
 use App\Http\Requests\IncidenciaStoreRequest;
 use App\Http\Requests\IncidenciaUpdateRequest;
+use App\Models\Incidencia;
 use App\Services\IncidenciaService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class IncidenciaController extends Controller
 {
     use HasTags;
 
+    public function __construct(
+        private IncidenciaService $incidenciaService
+    ) {}
+
     public function index()
     {
-        $user = Auth::user(); 
-
-        if (!$user) {
-            abort(403, "No estás logueado");
-        }
-
-        $incidencias = $user->incidencias()->orderBy('created_at', 'desc')->paginate(10);
+        $incidencias = Auth::user()
+            ->incidencias()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         return view('incidencias.index', compact('incidencias'));
     }
@@ -45,10 +46,12 @@ class IncidenciaController extends Controller
             ]);
 
             $this->syncTags($incidencia, $request->tags);
+
             return $incidencia;
         });
 
-        return redirect()->route('incidencias.index');
+        return redirect()->route('incidencias.index')
+            ->with('success', 'Incidencia creada correctamente');
     }
 
     public function show(Incidencia $incidencia)
@@ -74,7 +77,7 @@ class IncidenciaController extends Controller
         DB::transaction(function () use ($request, $incidencia) {
             $incidencia->update($request->validated());
             $this->syncTags($incidencia, $request->tags);
-        }); 
+        });
 
         return redirect()
             ->route('incidencias.index')
@@ -93,9 +96,7 @@ class IncidenciaController extends Controller
     public function metricas(Request $request)
     {
         $this->authorize('viewAny', Incidencia::class);
-
-        $service = new IncidenciaService();
-        $data = $service->getMetricas($request);
+        $data = $this->incidenciaService->getMetricas($request);
 
         return view('dashboard', $data);
     }
