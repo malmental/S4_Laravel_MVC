@@ -65,7 +65,7 @@
             <button type="submit" class="px-5 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">
                 Crear incidencia
             </button>
-            <a href="{{ route('incidencias.index') }}" onclick="sessionStorage.setItem('softNav','1')" class="px-5 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
+            <a href="{{ route('incidencias.index') }}" data-soft-nav="1" class="px-5 py-2 border-2 border-black bg-white text-xs uppercase interactive-btn">
                 Cancelar
             </a>
         </div>

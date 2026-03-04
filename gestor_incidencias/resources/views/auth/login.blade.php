@@ -80,18 +80,18 @@
     <div class="page-main w-full max-w-md">
         
         {{-- Encabezado de marca e identidad del sistema --}}
-        <div class="border-3 border-black bg-cream p-6 mb-6 text-center">
+        <div class="border-3 border-black bg-cream p-6 mb-4 text-center">
             <div class="flex flex-col items-center">
                 <svg class="w-20 h-20 mb-3" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="7" cy="17" r="5"/>
                     <path d="M15 2a7 7 0 0 0-6.88 5.737a6 6 0 0 1 8.143 8.143A6.997 6.997 0 0 0 15 2" opacity=".25"/>
                     <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
                 </svg>
-                <a href="{{ route('home') }}" onclick="sessionStorage.setItem('softNav','1')" class="hover:text-gray-600">
-                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENT MANAGER</h1>
+                <a href="{{ route('home') }}" data-soft-nav="1" class="hover:text-gray-600">
+                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </a>
             </div>
-            <p class="text-sm text-gray-custom mt-1">Sistema de Gestión de Incidencias</p>
+            <p class="text-sm text-gray-custom mt-1">Incident Managment</p>
         </div>
 
         {{-- Tarjeta principal de autenticación --}}
@@ -119,7 +119,7 @@
                 @endif
 
                 {{-- Formulario de login --}}
-                <form method="POST" action="{{ route('login') }}" class="space-y-5" onsubmit="sessionStorage.setItem('softNav','1')">
+                <form method="POST" action="{{ route('login') }}" class="space-y-5" data-soft-nav="1">
                     @csrf
 
                     {{-- Campo email --}}
@@ -184,7 +184,7 @@
                 ¿No tienes cuenta? 
                 <a 
                     href="{{ route('register') }}" 
-                    onclick="sessionStorage.setItem('softNav','1')"
+                    data-soft-nav="1"
                     class="font-semibold text-black underline hover:no-underline"
                 >
                     Registrarse
@@ -197,5 +197,27 @@
             <p>Incident Manager v2.1 &copy; 2026</p>
         </div>
     </div>
+    <script>
+        function enableSoftNav(trigger) {
+            if (!trigger) {
+                return;
+            }
+            sessionStorage.setItem('softNav', '1');
+        }
+
+        document.addEventListener('click', (event) => {
+            const trigger = event.target.closest('[data-soft-nav="1"]');
+            if (trigger) {
+                enableSoftNav(trigger);
+            }
+        });
+
+        document.addEventListener('submit', (event) => {
+            const trigger = event.target.closest('form[data-soft-nav="1"]');
+            if (trigger) {
+                enableSoftNav(trigger);
+            }
+        });
+    </script>
 </body>
 </html>

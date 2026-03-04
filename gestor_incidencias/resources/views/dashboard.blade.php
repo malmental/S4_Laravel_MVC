@@ -117,22 +117,22 @@
     
     {{-- Tarjetas de estado/prioridad que funcionan como filtros rápidos --}}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
-        <a href="{{ $filterUrls['critical'] }}" onclick="sessionStorage.removeItem('softNav')" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
+        <a href="{{ $filterUrls['critical'] }}" class="block border-2 border-black {{ in_array('alta', $prioridades) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
             <div class="text-xs uppercase tracking-wide mb-3">Critical</div>
             <div class="text-5xl font-light mb-2">{{ str_pad($altaPrioridad ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
             <div class="text-xs">High priority incidents</div>
         </a>
-        <a href="{{ $filterUrls['open'] }}" onclick="sessionStorage.removeItem('softNav')" class="block border-2 border-black {{ in_array('abierta', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
+        <a href="{{ $filterUrls['open'] }}" class="block border-2 border-black {{ in_array('abierta', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
             <div class="text-xs uppercase tracking-wide mb-3">Open</div>
             <div class="text-5xl font-light mb-2">{{ str_pad($abiertas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
             <div class="text-xs">Open incidents</div>
         </a>
-        <a href="{{ $filterUrls['inProgress'] }}" onclick="sessionStorage.removeItem('softNav')" class="block border-2 border-black {{ in_array('en_proceso', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
+        <a href="{{ $filterUrls['inProgress'] }}" class="block border-2 border-black {{ in_array('en_proceso', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
             <div class="text-xs uppercase tracking-wide mb-3">In process</div>
             <div class="text-5xl font-light mb-2">{{ str_pad($enProceso ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
             <div class="text-xs">In process incidents</div>
         </a>
-        <a href="{{ $filterUrls['closed'] }}" onclick="sessionStorage.removeItem('softNav')" class="block border-2 border-black {{ in_array('cerrada', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
+        <a href="{{ $filterUrls['closed'] }}" class="block border-2 border-black {{ in_array('cerrada', $estados) ? 'bg-black text-white' : 'bg-white' }} p-6 text-center hover:bg-cream-dark interactive-card">
             <div class="text-xs uppercase tracking-wide mb-3">Closed</div>
             <div class="text-5xl font-light mb-2">{{ str_pad($cerradas ?? 0, 2, '0', STR_PAD_LEFT) }}</div>
             <div class="text-xs">Closed incidents</div>
@@ -141,7 +141,7 @@
 
     {{-- Buscador por tag (filtro textual) --}}
     <div class="mb-6 border-2 border bg-white p-4">
-        <form method="GET" action="{{ route('dashboard') }}" class="flex gap-4 items-center" onsubmit="sessionStorage.removeItem('softNav')">
+        <form method="GET" action="{{ route('dashboard') }}" class="flex gap-4 items-center">
             <input type="text" name="tag" placeholder="Buscar por hashtag..." value="{{ request('tag') }}" class="border-2 border-black p-2 text-xs flex-1">
             <button class="px-16 py-2 border-2 border-black bg-black text-white text-xs uppercase interactive-btn">Search</button>
         </form>
