@@ -11,7 +11,9 @@ use Tests\TestCase;
 class CommentTest extends TestCase
 {
     use RefreshDatabase;
+
     protected User $user;
+
     protected Incidencia $incidencia;
 
     protected function setUp(): void

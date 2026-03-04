@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentStoreRequest extends FormRequest
 {
-
-public function authorize(): bool
+    public function authorize(): bool
     {
         return Auth::check();
     }

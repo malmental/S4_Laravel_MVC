@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Incidencia;
 use App\Models\Comment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -20,7 +19,7 @@ class DashboardController extends Controller
         // Filtro por tag
         if ($request->filled('tag')) {
             $query->whereHas('tags', function ($q) use ($request) {
-            $q->where('nombre', str_replace('#', '', $request->tag));
+                $q->where('nombre', str_replace('#', '', $request->tag));
             });
         }
 
@@ -35,7 +34,7 @@ class DashboardController extends Controller
             'en_proceso' => $incidencias->where('estado', 'en_proceso')->count(),
             'cerradas' => $incidencias->where('estado', 'cerrada')->count(),
         ];
-        
+
         return view('dashboard', compact('incidencias', 'comentarios', 'estadisticas'));
     }
 

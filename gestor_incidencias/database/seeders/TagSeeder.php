@@ -1,8 +1,11 @@
 <?php
+
 namespace Database\Seeders;
-use Illuminate\Database\Seeder;
-use App\Models\Tag;
+
 use App\Models\Incidencia;
+use App\Models\Tag;
+use Illuminate\Database\Seeder;
+
 class TagSeeder extends Seeder
 {
     public function run(): void
@@ -35,22 +38,52 @@ class TagSeeder extends Seeder
         $incidenciaCamara = Incidencia::where('titulo', 'Cámara web no funciona')->first();
         $incidenciaMensajes = Incidencia::where('titulo', 'Mensajes no llegan')->first();
         $incidenciaDisco = Incidencia::where('titulo', 'Disco duro lleno')->first();
-        
+
         // Asociar tags a incidencias
-        if ($incidenciaLogin) $incidenciaLogin->tags()->sync([$tags['urgente']->id, $tags['login']->id]);
-        if ($incidenciaPantalla) $incidenciaPantalla->tags()->sync([$tags['hardware']->id, $tags['urgente']->id]);
-        if ($incidenciaTeclado) $incidenciaTeclado->tags()->sync([$tags['hardware']->id]);
-        if ($incidenciaInternet) $incidenciaInternet->tags()->sync([$tags['red']->id]);
-        if ($incidenciaImpresion) $incidenciaImpresion->tags()->sync([$tags['hardware']->id]);
-        if ($incidenciaCorreo) $incidenciaCorreo->tags()->sync([$tags['email']->id]);
-        if ($incidenciaPC) $incidenciaPC->tags()->sync([$tags['hardware']->id, $tags['urgente']->id]);
-        if ($incidenciaWiFi) $incidenciaWiFi->tags()->sync([$tags['red']->id]);
-        if ($incidenciaApp) $incidenciaApp->tags()->sync([$tags['software']->id]);
-        if ($incidenciaPassword) $incidenciaPassword->tags()->sync([$tags['login']->id, $tags['urgente']->id]);
-        if ($incidenciaImpresora) $incidenciaImpresora->tags()->sync([$tags['hardware']->id]);
-        if ($incidenciaAntivirus) $incidenciaAntivirus->tags()->sync([$tags['seguridad']->id]);
-        if ($incidenciaCamara) $incidenciaCamara->tags()->sync([$tags['hardware']->id]);
-        if ($incidenciaMensajes) $incidenciaMensajes->tags()->sync([$tags['email']->id, $tags['urgente']->id]);
-        if ($incidenciaDisco) $incidenciaDisco->tags()->sync([$tags['software']->id, $tags['urgente']->id]);
+        if ($incidenciaLogin) {
+            $incidenciaLogin->tags()->sync([$tags['urgente']->id, $tags['login']->id]);
+        }
+        if ($incidenciaPantalla) {
+            $incidenciaPantalla->tags()->sync([$tags['hardware']->id, $tags['urgente']->id]);
+        }
+        if ($incidenciaTeclado) {
+            $incidenciaTeclado->tags()->sync([$tags['hardware']->id]);
+        }
+        if ($incidenciaInternet) {
+            $incidenciaInternet->tags()->sync([$tags['red']->id]);
+        }
+        if ($incidenciaImpresion) {
+            $incidenciaImpresion->tags()->sync([$tags['hardware']->id]);
+        }
+        if ($incidenciaCorreo) {
+            $incidenciaCorreo->tags()->sync([$tags['email']->id]);
+        }
+        if ($incidenciaPC) {
+            $incidenciaPC->tags()->sync([$tags['hardware']->id, $tags['urgente']->id]);
+        }
+        if ($incidenciaWiFi) {
+            $incidenciaWiFi->tags()->sync([$tags['red']->id]);
+        }
+        if ($incidenciaApp) {
+            $incidenciaApp->tags()->sync([$tags['software']->id]);
+        }
+        if ($incidenciaPassword) {
+            $incidenciaPassword->tags()->sync([$tags['login']->id, $tags['urgente']->id]);
+        }
+        if ($incidenciaImpresora) {
+            $incidenciaImpresora->tags()->sync([$tags['hardware']->id]);
+        }
+        if ($incidenciaAntivirus) {
+            $incidenciaAntivirus->tags()->sync([$tags['seguridad']->id]);
+        }
+        if ($incidenciaCamara) {
+            $incidenciaCamara->tags()->sync([$tags['hardware']->id]);
+        }
+        if ($incidenciaMensajes) {
+            $incidenciaMensajes->tags()->sync([$tags['email']->id, $tags['urgente']->id]);
+        }
+        if ($incidenciaDisco) {
+            $incidenciaDisco->tags()->sync([$tags['software']->id, $tags['urgente']->id]);
+        }
     }
 }

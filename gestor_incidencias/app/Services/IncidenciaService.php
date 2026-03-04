@@ -16,7 +16,7 @@ class IncidenciaService
         $incidencias = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         // 3. Calcular estadísticas
-        $estadisticas = $this->getEstadisticas($request);
+        $estadisticas = $this->getEstadisticas();
 
         // 4. Construir URLs de filtros
         $filterUrls = $this->buildFilterUrls($request);
@@ -33,7 +33,7 @@ class IncidenciaService
         ];
     }
 
-    private function buildFilteredQuery(Request $request)
+    private function buildFilteredQuery(Request $request): \Illuminate\Database\Eloquent\Builder
     {
         $query = Incidencia::query()
             ->with(['user', 'tags', 'comments.user', 'comments.replies', 'comments.replies.user']);
@@ -50,15 +50,19 @@ class IncidenciaService
         }
 
         if ($request->filled('tag')) {
-            $query->whereHas('tags', function ($q) use ($request) {
-                $q->where('nombre', str_replace('#', '', $request->tag));
-            });
+            $tagName = preg_replace('/[^a-zA-Z0-9_-]/', '', str_replace('#', '', $request->tag));
+
+            if (! empty($tagName)) {
+                $query->whereHas('tags', function ($q) use ($tagName) {
+                    $q->where('nombre', $tagName);
+                });
+            }
         }
 
         return $query;
     }
 
-    private function getEstadisticas(Request $request): array
+    private function getEstadisticas(): array
     {
         $porEstado = Incidencia::select('estado')
             ->selectRaw('COUNT(*) as total')

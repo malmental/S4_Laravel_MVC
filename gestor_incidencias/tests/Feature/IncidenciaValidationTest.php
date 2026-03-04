@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class IncidenciaValidationTest extends TestCase
@@ -12,13 +13,13 @@ class IncidenciaValidationTest extends TestCase
 
     protected User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
     }
 
-    /** @test */
+    #[Test]
     public function titulo_es_required()
     {
         $response = $this->actingAs($this->user)
@@ -26,12 +27,12 @@ class IncidenciaValidationTest extends TestCase
                 'descripcion' => 'Test descripcion',
                 'estado' => 'abierta',
                 'prioridad' => 'alta',
-        ]);
+            ]);
 
         $response->assertSessionHasErrors('titulo');
     }
 
-    /** @test */
+    #[Test]
     public function titulo_no_puede_exceder_255_caracteres()
     {
         $response = $this->actingAs($this->user)
@@ -45,7 +46,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('titulo');
     }
 
-    /** @test */
+    #[Test]
     public function descripcion_es_required()
     {
         $response = $this->actingAs($this->user)
@@ -58,7 +59,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('descripcion');
     }
 
-    /** @test */
+    #[Test]
     public function estado_debe_ser_valido()
     {
         $response = $this->actingAs($this->user)
@@ -72,7 +73,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('estado');
     }
 
-    /** @test */
+    #[Test]
     public function prioridad_debe_ser_valida()
     {
         $response = $this->actingAs($this->user)
@@ -86,7 +87,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('prioridad');
     }
 
-    /** @test */
+    #[Test]
     public function tags_es_opcional()
     {
         $response = $this->actingAs($this->user)
@@ -100,7 +101,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    /** @test */
+    #[Test]
     public function valores_validos_pasan_validacion()
     {
         $response = $this->actingAs($this->user)

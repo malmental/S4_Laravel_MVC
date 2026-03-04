@@ -89,7 +89,7 @@
                     <path d="M11 7a6 6 0 0 0-5.97 5.406a4.997 4.997 0 0 1 6.564 6.564A6 6 0 0 0 11 7" opacity=".5"/>
                 </svg>
                 <a href="{{ route('home') }}" data-soft-nav="1" class="hover:text-gray-600">
-                    <h1 class="text-2xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
+                    <h1 class="text-3xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </a>
             </div>
             <p class="text-sm text-gray-custom mt-1">Incident Managment</p>

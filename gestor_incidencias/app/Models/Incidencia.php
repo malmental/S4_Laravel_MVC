@@ -14,12 +14,17 @@ class Incidencia extends Model
         'descripcion',
         'estado',
         'prioridad',
-        'user_id', 
+        'user_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function tags()
@@ -30,51 +35,5 @@ class Incidencia extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class)->whereNull('parent_id')->with('replies');
-    }
-
-    // SCOPES
-    public function scopeAbierta($query)
-    {
-        return $query->where('estado', 'abierta');
-    }
-
-    public function scopeEnProceso($query)
-    {
-        return $query->where('estado', 'en_proceso');
-    }
-
-    public function scopeCerrada($query)
-    {
-        return $query->where('estado', 'cerrada');
-    }
-
-    public function scopeAlta($query)
-    {
-        return $query->where('prioridad', 'alta');
-    }
-
-    public function scopeMedia($query)
-    {
-        return $query->where('prioridad', 'media');
-    }
-
-    public function scopeBaja($query)
-    {
-        return $query->where('prioridad', 'baja');
-    }
-
-    public function scopeDeUsuario($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
-
-    public function scopeConTags($query)
-    {
-        return $query->with('tags');
-    }
-
-    public function scopeConComentarios($query)
-    {
-        return $query->with('comments.user', 'comments.replies', 'comments.replies.user');
     }
 }

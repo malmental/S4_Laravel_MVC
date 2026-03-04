@@ -12,6 +12,7 @@ class IncidenciaCrudTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+
     protected User $otroUsuario;
 
     protected function setUp(): void
@@ -81,7 +82,7 @@ class IncidenciaCrudTest extends TestCase
     public function test_usuario_no_puede_editar_incidencia_ajena()
     {
         $incidencia = Incidencia::factory()->create(['user_id' => $this->otroUsuario->id]);
-        
+
         $response = $this->actingAs($this->user)
             ->get("/incidencias/{$incidencia->id}/edit");
 
