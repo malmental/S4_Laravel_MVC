@@ -55,7 +55,7 @@
 
     /* Marco cuadrado contenedor del tablero (area visible del juego). */
     .ascii-snake-frame {
-    --snake-side: min(34rem, 82vw);
+    --snake-side: min(40rem, 82vw);
     --snake-grid: 32;
     --snake-gap: calc(var(--snake-side) / var(--snake-grid));
     width: var(--snake-side);

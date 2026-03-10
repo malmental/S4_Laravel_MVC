@@ -81,7 +81,7 @@
     <div class="page-main w-full max-w-md">
         
         {{-- Encabezado de marca e identidad del sistema --}}
-        <div class="border-3 border-black bg-cream p-6 mb-3 text-center">
+        <div class="border-3 border-black bg-cream p-6 text-center">
             <div class="flex flex-col items-center">
                 <svg class="w-20 h-20 mb-3" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="7" cy="17" r="5"/>
@@ -92,7 +92,7 @@
                     <h1 class="text-3xl font-semibold tracking-tight">INCIDENsly 𝒘ebApp</h1>
                 </a>
             </div>
-            <p class="text-sm text-gray-custom mt-3">An Incident Manager</p>
+            <p class="text-sm text-gray-custom mt-1">An Incident Manager</p>
         </div>
 
         {{-- Tarjeta principal de registro --}}
