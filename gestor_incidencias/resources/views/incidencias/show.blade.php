@@ -13,44 +13,7 @@
 
     {{-- Cuerpo informativo: campos, etiquetas y metadatos --}}
     <div class="p-6 space-y-5">
-        <div>
-            <label class="block text-xs uppercase text-gray-500 mb-1">Título</label>
-            <div class="text-lg font-medium">{{ $incidencia->titulo }}</div>
-        </div>
-
-        <div>
-            <label class="block text-xs uppercase text-gray-500 mb-1">Descripción</label>
-            <div class="p-4 border border-gray-300 bg-cream">{{ $incidencia->descripcion }}</div>
-        </div>
-
-        <div>
-            <label class="block text-xs uppercase text-gray-500 mb-1">Tags</label>
-            <div class="flex flex-wrap gap-1">
-                @forelse($incidencia->tags as $tag)
-                    <span class="px-2 py-1 text-xs bg-gray-300/50 text-gray-700 rounded">#{{ $tag->nombre }}</span>
-                @empty
-                    <span class="text-xs text-gray-400">—</span>
-                @endforelse
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs uppercase text-gray-500 mb-1">Estado</label>
-                <span class="px-3 py-1 border-2 border-black bg-white text-xs uppercase">{{ $incidencia->estado }}</span>
-            </div>
-            <div>
-                <label class="block text-xs uppercase text-gray-500 mb-1">Prioridad</label>
-                <span class="px-3 py-1 border-2 border-black text-xs uppercase {{ $incidencia->prioridad === 'alta' ? 'bg-black text-white' : 'bg-white' }}">
-                    {{ $incidencia->prioridad }}
-                </span>
-            </div>
-        </div>
-
-        <div class="pt-4 border-t border-gray-300">
-            <label class="block text-xs uppercase text-gray-500 mb-1">Creada</label>
-            <div class="text-sm">{{ $incidencia->created_at->format('Y-m-d H:i') }}</div>
-        </div>
+        <x-domain-incidence-detail :incidencia="$incidencia" />
     </div>
 
     {{-- Barra de acciones: editar, volver y eliminar --}}
