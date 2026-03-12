@@ -27,15 +27,15 @@
     {{-- Contenedor principal --}}
     <div class="w-full max-w-md">
 
-        {{-- TARJETA BLANCA CON BORDES NEGROS --}}
+        {{-- Tarjeta blanca con bordes negros --}}
         <div class="bg-white border-2 border-black">
 
-            {{-- HEADER: Barra de título --}}
+            {{-- Barra de título --}}
             <div class="px-6 py-4 border-b-2 border-black bg-cream-dark">
                 <h1 class="text-lg font-semibold uppercase tracking-tight">Error 404</h1>
             </div>
 
-            {{-- CONTENIDO: SVG, código 404 y mensaje --}}
+            {{-- SVG, código 404 y mensaje --}}
             <div class="p-6 text-center">
 
                 {{-- SVG de alerta animado (justo encima del 404) --}}
