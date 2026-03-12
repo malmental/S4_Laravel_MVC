@@ -43,21 +43,44 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
+        if (! $user) {
+            return Redirect::to('/');
+        }
+
         try {
             $request->validateWithBag('userDeletion', [
-                'password' => ['required', 'current_password'],
+                'current_password' => ['required'],
             ]);
         } catch (ValidationException $e) {
             return Redirect::route('profile.edit')
                 ->withErrors($e->validator, 'userDeletion');
         }
 
-        $user = $request->user();
+        $user->delete();
 
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
+    }
+
+    /**
+     * Force delete the user's account (without password confirmation).
+     */
+    public function forceDestroy(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user) {
+            return Redirect::to('/');
+        }
 
         $user->delete();
 
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

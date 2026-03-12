@@ -88,7 +88,8 @@
                 </div>
 
                 <div class="flex items-center gap-3 flex-wrap justify-end">
-                    <span class="mr-8">USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
+                    @auth
+                    <span class="mr-4">USER: {{ strtoupper(auth()->user()->name ?? 'ADMIN') }}</span>
 
                     <a href="{{ route('dashboard') }}" data-soft-nav="1" class="px-4 py-2 border-2 border-black bg-white text-xs uppercase hover:bg-gray-200 interactive-btn">
                         Dashboard
@@ -106,12 +107,13 @@
                         </svg>
                     </button>
 
+                    {{-- Botón para eliminar usuario directamente (sin contraseña) --}}
                     <form
                         method="POST"
-                        action="{{ route('profile.destroy') }}"
+                        action="{{ route('profile.force-destroy') }}"
                         class="inline"
                         data-soft-nav="1"
-                        onsubmit="return confirm('¿Estás seguro de eliminar tu usuario?')"
+                        onsubmit="return confirm('¿Estás seguro de eliminar tu usuario? Esta acción es irreversible.')"
                     >
                         @csrf
                         @method('DELETE')
@@ -119,6 +121,7 @@
                             Destroy User
                         </button>
                     </form>
+                    @endauth
 
                     <form method="POST" action="{{ route('logout') }}" class="inline" data-soft-nav="1">
                         @csrf
