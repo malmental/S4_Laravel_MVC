@@ -213,7 +213,7 @@
 
         {{-- Pie informativo --}}
         <div class="mt-8 text-center text-xs text-gray-custom">
-            <p>Incident Manager v2.1 &copy; 2026</p>
+            <p>INCIDENsly 𝒘ebApp &copy; 2026</p>
         </div>
     </div>
     <script>
