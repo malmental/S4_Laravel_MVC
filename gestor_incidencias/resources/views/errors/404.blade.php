@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    {{-- SECCIÓN HEAD de Metadatos --}}
+    {{-- Head de Metadatos --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Página no encontrada</title>
@@ -28,7 +28,7 @@
     <div class="w-full max-w-md">
 
         {{-- Tarjeta blanca con bordes negros --}}
-        <div class="bg-white border-2 border-black">
+        <div class="bg-white">
 
             {{-- Barra de título --}}
             <div class="px-6 py-4 border-b-2 border-black bg-cream-dark">
@@ -62,12 +62,14 @@
 
                 {{-- Mensaje descriptivo --}}
                 <p class="text-gray-700 mb-6">La página que buscas no existe o ha sido movida.</p>
-
-                {{-- Botón volver al inicio --}}
-                <a href="{{ url('/') }}" class="inline-block px-6 py-3 border-2 border-black bg-black text-white text-sm uppercase hover:bg-gray-800 transition-colors">
-                    Volver al inicio
-                </a>
             </div>
+        </div>
+        
+        {{-- Botón volver al inicio --}}
+        <div class="px-6 py-4 border-t-2 border-black bg-cream-dark text-center">
+            <a href="{{ url('/') }}" class="inline-block px-6 py-3 border-2 border-black bg-black text-white text-sm uppercase hover:bg-gray-800 transition-colors">
+                Volver al inicio
+            </a>
         </div>
     </div>
 </body>
