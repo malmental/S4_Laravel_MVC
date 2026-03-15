@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+    --cream: #e8e6e3;
+    --cream-dark: #d4d2cf;
+    }
+
+    body {
+        font-family: "IBM Plex Mono", monospace;
+    }
+}
+
+@layer components {
+    .bg-cream {
+    background-color: var(--cream);
+    }
+
+    .bg-cream-dark {
+    background-color: var(--cream-dark);
+    }
+
+    .border-3 {
+    border-width: 3px;
+    }
+
+    .interactive-btn {
+    @apply transition-colors duration-100 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-black/70 focus-visible:ring-offset-0;
+    }
+
+    .interactive-card {
+    @apply transition-colors duration-100 ease-out;
+    }
+
+    .motion-fade-in {
+    animation: motion-fade-in 220ms ease-out both;
+    }
+
+    .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-black/70 focus:ring-offset-2;
+    }
+
+    /* Render tipografico del tablero ASCII dentro del modal. */
+    .ascii-snake-board {
+    margin: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: calc((var(--snake-side) - (2 * var(--snake-gap))) / var(--snake-grid));
+    line-height: 1;
+    letter-spacing: 0.34em;
+    white-space: pre;
+    user-select: none;
+    }
+
+    /* Marco cuadrado contenedor del tablero (area visible del juego). */
+    .ascii-snake-frame {
+    --snake-side: min(40rem, 82vw);
+    --snake-grid: 32;
+    --snake-gap: calc(var(--snake-side) / var(--snake-grid));
+    width: var(--snake-side);
+    height: var(--snake-side);
+    box-sizing: border-box;
+    padding: var(--snake-gap);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+    }
+}
+
+[x-cloak] {
+display: none !important;
+}
+
+@keyframes motion-fade-in {
+    from {
+    opacity: 0.985;
+    transform: translateY(1px);
+    }
+
+    to {
+    opacity: 1;
+    transform: translateY(0);
+    }
+}
+
+/* Respeta accesibilidad si el usuario reduce movimiento */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+    }
+}
