@@ -318,7 +318,7 @@ vendor/bin/phpunit --filter=test_usuario_puede_crear_incidencia
 ### 9.1 Dashboard
 Muestra las métricas de incidencias con filtros dinámicos por estado y prioridad.
 
-![Dashboard](./docs/images/dashboard.png)
+![Dashboard](./docs/images/Dashboard.png)
 
 ### 9.2 Modal de Incidencias
 Interfaz con modales para crear, editar y eliminar incidencias.
