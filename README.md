@@ -137,7 +137,7 @@ Password: password
 - viewAny, view, create: cualquier usuario autenticado
 - update, delete: solo el autor del comentario
 
-### 4.4 Capa de Servicios
+### 4.4 Capa de Servicio
 
 **IncidenciaService** (`app/Services/IncidenciaService.php`)
 - Generación de métricas para el dashboard
@@ -152,7 +152,6 @@ Password: password
 | IncidenciaStoreRequest  | app/Http/Requests/ | título (req), descripción (req), estado, prioridad, tags |
 | IncidenciaUpdateRequest | app/Http/Requests/ | Igual que store                                          |
 | CommentStoreRequest     | app/Http/Requests/ | contenido (req), incidencia_id, parent_id (nullable)     |
-| ProfileUpdateRequest    | app/Http/Requests/ | name, email |
 
 ### 4.6 Traits
 
