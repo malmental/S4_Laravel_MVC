@@ -19,8 +19,7 @@ class IncidenciaValidationTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    #[Test]
-    public function titulo_es_required()
+    public function test_titulo_es_required()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -32,8 +31,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('titulo');
     }
 
-    #[Test]
-    public function titulo_no_puede_exceder_255_caracteres()
+    public function test_titulo_no_puede_exceder_255_caracteres()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -46,8 +44,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('titulo');
     }
 
-    #[Test]
-    public function descripcion_es_required()
+    public function test_descripcion_es_required()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -59,8 +56,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('descripcion');
     }
 
-    #[Test]
-    public function estado_debe_ser_valido()
+    public function test_estado_debe_ser_valido()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -73,8 +69,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('estado');
     }
 
-    #[Test]
-    public function prioridad_debe_ser_valida()
+    public function test_prioridad_debe_ser_valida()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -87,8 +82,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasErrors('prioridad');
     }
 
-    #[Test]
-    public function tags_es_opcional()
+    public function test_tags_es_opcional()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
@@ -101,8 +95,7 @@ class IncidenciaValidationTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    #[Test]
-    public function valores_validos_pasan_validacion()
+    public function test_valores_validos_pasan_validacion()
     {
         $response = $this->actingAs($this->user)
             ->post('/incidencias', [
