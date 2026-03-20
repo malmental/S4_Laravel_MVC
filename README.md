@@ -40,7 +40,7 @@ cp .env.example .env
 php artisan key:generate
 
 # 5. Ejecutar migraciones
-php artisan migrate
+php artisan migrate --seed
 
 # 6. Instalar dependencias frontend
 npm install
